@@ -1,2 +1,2 @@
-# Smart-College-Companion
-Smart College Companion is a Django-based college management system that helps manage attendance, assignments, timetables, notices, and student records through role-based access for admin, staff, and students.
+Cricket Tournament System
+Cricket Tournament System is a web-based platform designed to simplify the management of cricket tournaments. The application allows administrators to manage players, organize matches, track statistics, maintain tournament records, and handle awards through a centralized dashboard.
