@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Timetable</title>
+
+<style>
+:root {
+  --primary:#7c3aed;
+  --accent-gradient: linear-gradient(135deg,#7c3aed,#5b21b6);
+}
+
+body{background:#f4f7f6;font-family:Poppins;}
+
+.main-content{margin-left:250px;padding:40px;}
+
+.container{
+  max-width:1000px;margin:auto;background:white;
+  padding:25px;border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+h2{text-align:center;}
+
+select,input{
+  padding:10px;border-radius:8px;border:1px solid #ddd;
+}
+
+input[type="submit"]{
+  background:var(--accent-gradient);
+  color:white;border:none;
+}
+
+table{width:100%;margin-top:20px;border-collapse:collapse;}
+th{background:var(--accent-gradient);color:white;}
+td{padding:10px;text-align:center;}
+</style>
+</head>
+
+<body>
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+<div class="container">
+
+<h2>Timetable</h2>
+
+<form method="POST">
+<select name="t1">
+<option>BCA</option>
+</select>
+
+<select name="t2">
+<option>1</option>
+</select>
+
+<input type="submit" value="View">
+</form>
+
+<table>
+<tr><th>Day</th><th>8:30</th><th>9:30</th></tr>
+
+{% for day,times in table.items %}
+<tr>
+<td>{{ day }}</td>
+<td>{{ times.t1 }}</td>
+<td>{{ times.t2 }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+</div>
+</body>
+</html>

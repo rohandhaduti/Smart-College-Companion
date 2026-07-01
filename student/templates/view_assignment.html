@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignments</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f7f6;
+    margin:0;
+}
+.main-content{
+    margin-left:250px;
+    padding:30px;
+}
+.container{
+    width:90%;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+h2{
+    text-align:center;
+    color:#8c00ff;
+}
+.filter-box{
+    text-align:center;
+    margin:20px 0;
+}
+select,button{
+    padding:10px;
+    margin:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    min-width:170px;
+}
+button{
+    background:#8c00ff;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+th{
+    background:#8c00ff;
+    color:#fff;
+}
+</style>
+</head>
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+<div class="container">
+
+<h2>Assignment Details</h2>
+
+<!-- FILTER -->
+<div class="filter-box">
+
+<select id="dept">
+<option value="">Select Department</option>
+<option value="BA">BA</option>
+<option value="BCOM">BCOM</option>
+<option value="BSC">BSC</option>
+<option value="BBA">BBA</option>
+<option value="BCA">BCA</option>
+</select>
+
+<select id="sem">
+<option value="">Select Semester</option>
+<option value="1">Sem 1</option>
+<option value="2">Sem 2</option>
+<option value="3">Sem 3</option>
+<option value="4">Sem 4</option>
+<option value="5">Sem 5</option>
+<option value="6">Sem 6</option>
+</select>
+
+<button onclick="loadAssignments()">Search</button>
+
+</div>
+
+<!-- TABLE -->
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Subject</th>
+<th>Title</th>
+<th>Description</th>
+<th>Instructor</th>
+<th>Date</th>
+<th>Deadline</th>
+</tr>
+</thead>
+
+<tbody id="data">
+<tr>
+<td colspan="7">Select Department & Semester</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+<script>
+
+function loadAssignments(){
+
+    let dept = document.getElementById("dept").value;
+    let sem  = document.getElementById("sem").value;
+
+    if(dept==="" || sem===""){
+        alert("Please select Department and Semester");
+        return;
+    }
+
+    fetch(`/get-assignments/?dept=${dept}&sem=${sem}`)
+    .then(response => response.json())
+    .then(data => {
+
+        let table = document.getElementById("data");
+
+        if(data.length === 0){
+            table.innerHTML = "<tr><td colspan='7'>No assignments found</td></tr>";
+            return;
+        }
+
+        table.innerHTML = "";
+
+        data.forEach(row => {
+            table.innerHTML += `
+            <tr>
+                <td>${row.assignment_id}</td>
+                <td>${row.subject}</td>
+                <td>${row.title}</td>
+                <td>${row.description}</td>
+                <td>${row.instructor_id}</td>
+                <td>${row.given_date}</td>
+                <td>${row.deadline}</td>
+            </tr>
+            `;
+        });
+
+    })
+    .catch(error => {
+        document.getElementById("data").innerHTML =
+        "<tr><td colspan='7'>Error loading assignments</td></tr>";
+    });
+
+}
+
+</script>
+
+</body>
+</html>

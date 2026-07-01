@@ -1,0 +1,199 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subject Details</title>
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        background-color: #f0f2f9; 
+        margin: 0px;
+        padding: 0px;
+        display: flex;
+    }
+    
+    .main-content {
+        margin-left: 270px; 
+        width: calc(100% - 270px);
+        padding: 40px;
+        box-sizing: border-box;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .form-container {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+        padding: 40px;
+        width: 100%;
+        max-width: 650px;
+        margin-top: 30px;
+    }
+
+    .header-title {
+        font-size: 26px;
+        color: #1e293b;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 35px;
+        position: relative;
+    }
+
+    .header-title::after {
+        content: '';
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        display: block;
+        margin: 12px auto 0;
+        border-radius: 2px;
+    }
+
+    .input-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .input-box {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .input-box.full {
+        grid-column: span 2;
+    }
+
+    .input-box span {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 8px;
+    }
+
+    .input-box input, 
+    .input-box select {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1.5px solid #e2e8f0;
+        background: #f8fafc;
+        color: #334155;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .input-box input:focus, 
+    .input-box select:focus {
+        outline: none;
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+        background: #fff;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 12px;
+        width: 100%;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 25px;
+        letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+    }
+    
+    @media(max-width: 768px) {
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+        .form-container {
+            padding: 25px;
+        }
+        .input-grid {
+            grid-template-columns: 1fr;
+        }
+        .input-box.full {
+            grid-column: span 1;
+        }
+    }
+</style>
+</head>
+
+<body>
+    {% include 'admin_menu.html' %}
+    
+    <div class="main-content">
+        <div class="form-container">
+            <div class="header-title">Add Subjects</div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-grid">
+                    <div class="input-box full">
+                        <span>Subject Name</span>
+                        <input type="text" name="t1" placeholder="Enter Subject Name" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Instructor ID</span>
+                        <input type="text" name="t2" placeholder="Instructor associated" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Department</span>
+                        <select name="t3" required>
+                            <option value="" disabled selected>Select Department</option>
+                            <option>BA</option>
+                            <option>BCOM</option>
+                            <option>BSC</option>
+                            <option>BBA</option>
+                            <option>BCA</option>
+                        </select>
+                    </div>
+
+                   <!--  <div class="input-box">
+                        <span>Student ID / Target</span>
+                        <input type="text" name="t4" placeholder="Enter Student ID filter if any" required>
+                    </div>  -->
+
+                    <div class="input-box">
+                        <span>Semester</span>
+                        <select name="t5" required>
+                            <option value="" disabled selected>Select Semester</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn"><i class="fas fa-plus-circle" style="margin-right:8px;"></i> CREATE SUBJECT</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

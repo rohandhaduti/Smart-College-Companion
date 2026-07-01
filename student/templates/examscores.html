@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <title>Exam scores</title>
+    <style>
+        body{
+            background-color:rgb(171, 176, 174);
+            margin: 0px;
+        }
+        .form-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 100px;
+        }
+        form{
+            background-color: white;
+            width: 350px;
+            height: 470px;
+            border: 1px solid white;
+            border-radius: 20px;
+        }
+        h1{text-align: center;
+            color: rgb(193, 35, 174);}
+        input{
+            width: 85%;
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-left: 15px;
+            border: 0.05px solid gray;
+            border-radius: 20px;
+        }
+        p{
+            color: gray;
+            margin: 5px 20px;
+        }
+        input[type='submit']{
+            background-color: blueviolet;
+            color: white;
+            border: none;
+            width: 91%;
+            margin-top: 18px;
+        }
+      select{
+            width: 340px;
+            padding: 8px;
+            max-width: 100%;
+            margin: 8px auto;
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <h1>Exam Scores</h1>
+            <input type="text" placeholder="Student id" name="t1" required pattern="[0-9]+"><br>
+            <input type="text" placeholder="Exam id" name="t2" required pattern="[a-zA-Z0-9\s]+"><br>
+            <input type="number" placeholder="Score" name="t3" required pattern="[0-9]+"><br>
+            <p>Performance Level</p>
+             <select name="t4" required>
+                <option value="SELECT">SELECT</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Very good">Very good</option>
+                <option value="Good">Good</option>
+                <option value="Average">Average</option>
+                <option value="Fair">Fair</option>
+                <option value="Poor">Poor</option>
+            </select><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>

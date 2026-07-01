@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Show Attendance</title>
+
+    <style>
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#f8fafc,#eef2ff,#fff7ed);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content{
+    margin-left:250px;
+    padding:35px;
+}
+
+/* ===== TITLE ===== */
+h2{
+    text-align:center;
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:28px;
+    background:linear-gradient(135deg,#ff7a00,#ff4500);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    letter-spacing:1px;
+}
+
+/* ===== FORM BOX ===== */
+.form-box{
+    max-width:760px;
+    margin:auto;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(14px);
+    padding:28px;
+    border-radius:20px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.08);
+    border:1px solid rgba(255,255,255,0.5);
+    margin-bottom:28px;
+}
+
+.form-box form{
+    display:grid;
+    grid-template-columns:140px 1fr 100px 1fr auto;
+    gap:15px;
+    align-items:center;
+}
+
+.form-box label{
+    font-weight:600;
+    color:#334155;
+    font-size:15px;
+}
+
+.form-box input[type="text"]{
+    padding:12px 14px;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    background:#f8fafc;
+    font-size:14px;
+    color:#0f172a;
+    transition:0.3s;
+}
+
+.form-box input[type="text"]:focus{
+    border-color:#ff7a00;
+    box-shadow:0 0 0 4px rgba(255,122,0,0.12);
+    outline:none;
+}
+
+.form-box select{
+    padding:12px 14px;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    background:#f8fafc;
+    font-size:14px;
+    color:#0f172a;
+    width:100%;
+}
+
+.form-box select:focus{
+    border-color:#ff7a00;
+    box-shadow:0 0 0 4px rgba(255,122,0,0.12);
+    outline:none;
+}
+/* ===== BUTTON ===== */
+.form-box input[type="submit"]{
+    padding:12px 22px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#ff7a00,#ff4500);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 8px 18px rgba(255,122,0,0.25);
+}
+
+.form-box input[type="submit"]:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 22px rgba(255,122,0,0.35);
+}
+
+/* ===== TABLE BOX ===== */
+.table-container{
+    max-width:1100px;
+    margin:auto;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(14px);
+    padding:24px;
+    border-radius:22px;
+    box-shadow:0 14px 35px rgba(0,0,0,0.08);
+    border:1px solid rgba(255,255,255,0.5);
+    overflow-x:auto;
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:18px;
+}
+
+table th{
+    background:linear-gradient(135deg,#fc881b,#f45a21);
+    color:white;
+    padding:15px;
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+
+table td{
+    margin:10px 5px;
+    padding:14px;
+    text-align:center;
+    color:#334155;
+    font-size:14px;
+    border-bottom:1px solid #f1f5f9;
+}
+
+table tr:nth-child(even){
+    background:#fff7ed;
+}
+
+table tr:nth-child(odd){
+    background:#ffffff;
+}
+
+table tr:hover{
+    background:#ffe7d1;
+    transition:0.2s;
+}
+
+/* ===== PERCENTAGE COLORS ===== */
+.percentage-high{
+    color:#16a34a;
+    font-weight:700;
+    background:#dcfce7;
+    padding:6px 10px;
+    border-radius:20px;
+    display:inline-block;
+}
+
+.percentage-low{
+    color:#dc2626;
+    font-weight:700;
+    background:#fee2e2;
+    padding:6px 10px;
+    border-radius:20px;
+    display:inline-block;
+}
+
+/* ===== EMPTY ROW ===== */
+td[colspan="5"]{
+    color:#64748b;
+    font-weight:500;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:992px){
+    .form-box form{
+        grid-template-columns:1fr;
+    }
+
+    .main-content{
+        margin-left:70px;
+        padding:20px;
+    }
+
+    h2{
+        font-size:26px;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+{% include 'staff_menu.html' %}
+
+<div class="main-content">
+
+    <h2>Attendance Records</h2>
+
+   <!-- FORM -->
+<!-- FORM -->
+<div class="form-box">
+<form method="POST">
+{% csrf_token %}
+
+<label>Semester:</label>
+<select name="sem" id="semesterSelect" required>
+    <option value="">Select Semester</option>
+
+    {% for s in semesters %}
+    <option value="{{ s }}" {% if selected_sem|stringformat:"s" == s|stringformat:"s" %}selected{% endif %}>
+        Semester {{ s }}
+    </option>
+    {% endfor %}
+</select>
+
+
+<label>Subject:</label>
+<select name="subject" id="subjectSelect" required>
+    <option value="">Select Subject</option>
+
+    {% for row in instructor_subjects %}
+    <option value="{{ row.course_name }}"
+            data-sem="{{ row.sem }}"
+            {% if selected_subject == row.course_name %}selected{% endif %}>
+        {{ row.course_name }}
+    </option>
+    {% endfor %}
+</select>
+
+<input type="submit" value="View">
+
+</form>
+</div>
+
+    <!-- TABLE -->
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Total Classes</th>
+                <th>Attended Classes</th>
+                <th>%</th>
+            </tr>
+
+            {% for i in data %}
+            <tr>
+                <td>{{ i.student_id }}</td>
+                <td>{{ i.student_name }}</td>
+                <td>{{ i.total_classes }}</td>
+                <td>{{ i.attended_classes }}</td>
+                <td class="{% if i.percentage >= 75 %}percentage-high{% else %}percentage-low{% endif %}">
+                    {{ i.percentage|floatformat:1 }}%
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="padding:20px;">No records found</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const sem = document.getElementById("semesterSelect");
+    const sub = document.getElementById("subjectSelect");
+
+    function filterSubjects(){
+        let selectedSem = sem.value;
+
+        for(let option of sub.options){
+
+            if(option.value === ""){
+                option.hidden = false;
+                continue;
+            }
+
+            if(option.getAttribute("data-sem") === selectedSem){
+                option.hidden = false;
+            }else{
+                option.hidden = true;
+            }
+        }
+
+        if(selectedSem === ""){
+            sub.value = "";
+        }
+    }
+
+    sem.addEventListener("change", function(){
+        sub.value = "";
+        filterSubjects();
+    });
+
+    filterSubjects();
+
+});
+</script>
+</html>

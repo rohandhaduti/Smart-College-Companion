@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <style>/* SAME SIDEBAR AS TIMETABLE */
+/* LIGHT SIDEBAR BACKGROUND */
+.sidebar { width:240px; height:100vh; background:var(--sidebar-bg); position:fixed; color:white; overflow-y:auto; z-index:100; }
+    .sidebar h1 { text-align:center; padding:22px 0 10px; font-family:'Syne',sans-serif; font-size:2.2rem; letter-spacing:3px; }
+    .welcome-box { background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(255,107,43,.05)); border:1px solid rgba(255,107,43,.4); margin:10px; padding:14px; border-radius:12px; text-align:center; }
+    .welcome-box h3 { color:var(--orange); font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+    .welcome-box p { font-size:13px; color:#e2e8f0; font-weight:500; }
+    .sidebar ul { list-style:none; margin-top:8px; padding:0 8px; }
+    .sidebar ul li a { color:#94a3b8; text-decoration:none; padding:10px 14px; display:flex; align-items:center; transition:.25s; font-size:13px; border-radius:8px; margin-bottom:2px; }
+    .sidebar ul li a i { width:22px; margin-right:10px; color:var(--orange); }
+    .sidebar ul li a:hover { background:rgba(255,107,43,.18); color:white; transform:translateX(4px); }
+    .logout-btn { padding:16px 16px; border-top:1px solid #1e2238; margin-top:10px; }
+    .logout-btn a { color:#94a3b8; text-decoration:none; font-size:13px; display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px; transition:.25s; }
+    .logout-btn a:hover { background:rgba(244,63,94,.2); color:#f43f5e; }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Details</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: white;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2a5298;
+        }
+
+        .user-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box span {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-box input,
+        .input-box textarea {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus,
+        .input-box textarea:focus {
+            border-color: #2a5298;
+            outline: none;
+            box-shadow: 0 0 5px rgba(42,82,152,0.3);
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        /* Full width fields */
+        .input-box:nth-child(3),
+        .input-box:nth-child(7),
+        .input-box:nth-child(8) {
+            grid-column: span 2;
+        }
+
+        .button {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .button input {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #2a5298;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .button input:hover {
+            background: #1e3c72;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .user-details {
+                grid-template-columns: 1fr;
+            }
+
+            .input-box:nth-child(3),
+            .input-box:nth-child(7),
+            .input-box:nth-child(8) {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'staff_menu.html' %}
+
+    <div class="main-content">
+        <div class="container">
+
+            <div class="title">Assignment Details</div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="user-details">
+
+                    <div class="input-box">
+                        <span>Assignment ID</span>
+                        <input type="text" name="t6" value="{{assignment_id}}" readonly required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Title</span>
+                        <input type="text" name="t1" placeholder="Enter Title" required pattern="[A-Za-z\s]{3,50}">
+                    </div>
+
+                    <div class="input-box">
+                        <span>Description</span>
+                        <textarea name="t2" rows="3" required minlength="5" maxlength="200" pattern="[A-Za-z\s0-9]+"></textarea>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Subject</span>
+                        <input type="text" name="t7" placeholder="Enter Subject" required pattern="[A-Za-z\s]+">
+                    </div>
+
+                    <div class="input-box">
+                        <span>Semester</span>
+                        <input type="number" value="{{ instructor.sem }}" readonly>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Instructor Id</span>
+                        <input type="text" name="t3" value="{{ instructor_id }}" readonly required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Given date</span>
+                        <input type="datetime-local" name="t5" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Deadline</span>
+                        <input type="date" name="t4" required>
+                    </div>
+
+                </div>
+
+                <div class="button">
+                    <input type="submit" value="SUBMIT">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</body>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let today = new Date().toISOString().split('T')[0];
+
+    let dateField = document.querySelector('input[name="t4"]');
+
+    dateField.value = today;     // auto fill today
+    dateField.min = today;       // no old dates
+});
+</script>
+</html>

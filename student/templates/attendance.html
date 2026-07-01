@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance</title>
+
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:#f4f6f9;
+}
+
+.main-content{
+    padding:40px;
+}
+
+.container{
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:30px 35px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#1e293b;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    margin-top:14px;
+    margin-bottom:6px;
+    font-weight:600;
+    color:#334155;
+}
+
+input,select{
+    padding:11px 12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:14px;
+    outline:none;
+    transition:.3s;
+}
+
+input:focus,select:focus{
+    border-color:#007bff;
+    box-shadow:0 0 0 3px rgba(0,123,255,.12);
+}
+
+input[readonly]{
+    background:#f1f5f9;
+}
+
+input[type="submit"]{
+    margin-top:24px;
+    background:#007bff;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+input[type="submit"]:hover{
+    background:#0056b3;
+}
+
+@media(max-width:600px){
+    .container{
+        padding:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+{% include 'staff_menu.html' %}
+
+<div class="main-content">
+<div class="container">
+
+<form method="POST">
+{% csrf_token %}
+
+<h2>ATTENDANCE</h2>
+
+<label>Instructor</label>
+<input type="text" value="{{ name }}" readonly>
+
+<label>Instructor ID</label>
+<input type="text" value="{{ instructor_id }}" readonly>
+
+<label>Department</label>
+<input type="text" value="{{ instructor.department }}" readonly>
+
+<label>Select Semester</label>
+<select name="semester" required id="semesterSelect">
+    <option value="">Choose Semester</option>
+
+    {% regroup instructor_subjects by sem as sem_list %}
+
+    {% for item in sem_list %}
+        <option value="{{ item.grouper }}">
+            Semester {{ item.grouper }}
+        </option>
+    {% endfor %}
+</select>
+
+
+<label>Select Subject</label>
+<select name="subject" required id="subjectSelect">
+    <option value="">Choose Subject</option>
+
+    {% for row in instructor_subjects %}
+        <option value="{{ row.course_name }}" data-sem="{{ row.sem }}">
+            {{ row.course_name }}
+        </option>
+    {% endfor %}
+</select>
+
+<input type="submit" value="SUBMIT">
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const sem = document.getElementById("semesterSelect");
+    const sub = document.getElementById("subjectSelect");
+
+    sem.addEventListener("change", function(){
+
+        let selected = this.value;
+
+        for(let option of sub.options){
+
+            if(option.value === ""){
+                option.hidden = false;
+                continue;
+            }
+
+            option.hidden = option.dataset.sem !== selected;
+        }
+
+        sub.value = "";
+    });
+
+});
+</script>
+</body>
+</html>

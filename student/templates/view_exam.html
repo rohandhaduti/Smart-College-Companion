@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        tr:hover {
+            background: #e6f2ff;
+        }
+
+        .delete-btn {
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <table border="2">
+            <h2>EXAM DETAILS</h2>
+            <tr>
+                <td>Exam id</td>
+                <td>Course id</td>
+                <td>Exam name</td>
+                <td>Date</td>
+                <td>Max score</td>
+                <td>Action</td>
+
+            </tr>
+            <tr>
+              {% for i in userdict %}
+                <td>{{ i.exam_id }}</td>
+                 <td>{{ i.course_id }}</td>
+                 <td>{{ i.exam_name }}</td>
+                 <td>{{ i.date }}</td>
+                 <td>{{ i.max_score }}</td>
+                 <td class="delete-btn"><a href="{% url 'del_exams' i.id %}">Delete</a></td>
+
+                 </tr>
+              {% endfor %}
+        </table>
+
+    </form>
+
+</body>
+</html>

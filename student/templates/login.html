@@ -1,0 +1,51 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+
+<title>Login</title>
+<style>
+body{
+    margin:0; height:100vh;
+    background:url("{% static 'images/login_back.png' %}") center/cover no-repeat;
+    font-family:Arial;
+    display:flex; align-items:center; justify-content:center;
+}
+.form-box{
+    background:rgba(0,0,0,0.35);
+    padding:30px;
+    width:320px;
+    border-radius:10px;
+    color:#fff;
+    box-shadow: 2px 3px 4px white;
+}
+.form-box h2{text-align:center;margin-bottom:20px;}
+input,button{
+    width:90%; padding:12px;
+    margin:10px 0; border:none;
+    border-radius:5px;
+}
+.lgnbtn{
+    background:#d1ce0a; color:#fff;
+    font-size:16px; cursor:pointer;
+    width: 98%;
+}
+form a{text-decoration: none;color: white}
+</style>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-box">
+            {{msg}}
+        <h2>Login</h2>
+        <input type="email" placeholder="Username/email id" required pattern="/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/" name="t1">
+        <input type="password" placeholder="Password" name="t2" required pattern="[0-9a-zA-Z@$.]+">
+            <input type="submit" value="Login" class="lgnbtn">
+            <a href="{% url 'college_admin_register' %}" class="register-link"> Register College Admin </a>
+            <a href="forgotpassword" style="margin-left: 2px;">Forgot password</a>
+            <a href="{% url 'changepassword' %}" style="margin-left: 50px;">Change Password</a>
+
+        </div>
+    </form>
+</body>
+</html>

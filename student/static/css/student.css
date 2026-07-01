@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #7c3aed;
+  --secondary: #5b21b6;
+  --sidebar-bg: #140f23;
+  --card-bg: rgba(255,255,255,0.96);
+  --text-main: #333;
+  --accent-gradient: linear-gradient(135deg,#7c3aed,#c669ed);
+}
+
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+/* BODY */
+body{
+  background:#f4f7f6;
+  color:var(--text-main);
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar{
+  width:280px;
+  height:100vh;
+  position:fixed;
+  top:0;
+  left:0;
+  background:var(--sidebar-bg);
+  color:white;
+
+  display:flex;
+  flex-direction:column;
+}
+
+/* LOGO */
+.logo{
+  margin-top: 0.5px;
+  margin-bottom: 0.5px;
+  text-align:center;
+  padding:20px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.logo span{
+  color:#a78bfa;
+
+}
+
+/* USER BOX */
+.welcome-box{
+  text-align:center;
+  padding:12px;
+  margin:12px;
+  border-radius:12px;
+  background:var(--accent-gradient);
+  width: 257px;
+}
+
+/* MENU */
+.menu{
+  list-style:none;
+  padding:10px;
+  flex:1;
+  overflow-y:auto;   /* 🔥 IMPORTANT FIX */
+}
+
+.menu li{
+  margin:8px 0;
+}
+
+.menu a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:white;
+  padding:12px 15px;
+  border-radius:10px;
+  transition:0.3s;
+  font-size: 13px;
+}
+
+.menu a i{
+  width:20px;
+  text-align:center;
+}
+
+/* HOVER FIXED */
+.menu a:hover{
+  background:linear-gradient(135deg,#422d66,#593966);
+  transform:translateX(5px);
+}
+
+/* ACTIVE */
+.menu a.active{
+  background:var(--accent-gradient);
+}
+
+/* FOOTER (ALWAYS AT BOTTOM) */
+.sidebar-footer{
+  padding:15px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  background:#140f23;
+}
+
+.sidebar-footer a{
+  display:block;
+  text-decoration:none;
+  color:white;
+  padding:10px;
+  margin:5px 0;
+  border-radius:8px;
+  background:#140f23;
+  transition:0.3s;
+}
+
+.sidebar-footer a:hover{
+  background:linear-gradient(135deg,#422d66,#593966);
+}
+
+/* MAIN CONTENT */
+.main-content{
+  margin-left:260px;
+  padding:40px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{
+    width:200px;
+  }
+
+  .main-content{
+    margin-left:200px;
+  }
+}

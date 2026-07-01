@@ -1,0 +1,436 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --orange: #ff6b2b;
+        --sidebar-bg: #0d0d1a;
+        --sidebar-accent: #1a1a35;
+        --blue:   linear-gradient(135deg,#4f8ef7,#1a56db);
+        --purple: linear-gradient(135deg,#a855f7,#7c3aed);
+        --red:    linear-gradient(135deg,#f43f5e,#be123c);
+        --lime:   linear-gradient(135deg,#a3e635,#65a30d);
+        --brown:  linear-gradient(135deg,#f97316,#c2410c);
+        --pink:   linear-gradient(135deg,#ec4899,#9d174d);
+        --brown:   linear-gradient(135deg,#3a1515,#56263a);
+
+        --bg: #f0f2f9;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'DM Sans',sans-serif; }
+    body { background:var(--bg); display:flex; }
+
+    /* SIDEBAR */
+    .sidebar { width:240px; height:100vh; background:var(--sidebar-bg); position:fixed; color:white; overflow-y:auto; z-index:100; }
+    .sidebar h1 { text-align:center; padding:22px 0 10px; font-family:'Syne',sans-serif; font-size:2.2rem; letter-spacing:3px; }
+    .welcome-box { background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(255,107,43,.05)); border:1px solid rgba(255,107,43,.4); margin:10px; padding:14px; border-radius:12px; text-align:center; }
+    .welcome-box h3 { color:var(--orange); font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+    .welcome-box p { font-size:13px; color:#e2e8f0; font-weight:500; }
+    .sidebar ul { list-style:none; margin-top:8px; padding:0 8px; }
+    .sidebar ul li a { color:#94a3b8; text-decoration:none; padding:10px 14px; display:flex; align-items:center; transition:.25s; font-size:13px; border-radius:8px; margin-bottom:2px; }
+    .sidebar ul li a i { width:22px; margin-right:10px; color:var(--orange); }
+    .sidebar ul li a:hover { background:rgba(255,107,43,.18); color:white; transform:translateX(4px); }
+    .logout-btn { padding:16px 16px; border-top:1px solid #1e2238; margin-top:10px; }
+    .logout-btn a { color:#94a3b8; text-decoration:none; font-size:13px; display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px; transition:.25s; }
+    .logout-btn a:hover { background:rgba(244,63,94,.2); color:#f43f5e; }
+
+    /* MAIN */
+    .main { flex:1; margin-left:240px; }
+    .navbar { background:linear-gradient(90deg,#ff6b2b,#ff4d00); color:white; padding:14px 28px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:90; box-shadow:0 4px 20px rgba(255,107,43,.35); }
+    .navbar h2 { font-family:'Syne',sans-serif; font-size:20px; letter-spacing:1px; }
+    .nav-info { display:flex; align-items:center; gap:8px; font-size:13px; }
+    .nav-info span { background:rgba(255,255,255,.2); padding:4px 12px; border-radius:20px; }
+
+    .content-padding { padding:22px; }
+    .section-label { font-family:'Syne',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#94a3b8; margin-bottom:12px; }
+
+    /* CARDS */
+    .cards-container { display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-bottom:22px; }
+    .card { padding:20px 14px; border-radius:14px; color:white; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,.15); transition:.3s; cursor:default; }
+    .card:hover { transform:translateY(-5px); box-shadow:0 14px 32px rgba(0,0,0,.2); }
+    .card h2 { font-family:'Syne',sans-serif; font-size:30px; font-weight:800; }
+    .card p { font-size:11px; margin-top:4px; opacity:.85; letter-spacing:.5px; }
+
+    /* MIDDLE GRID */
+    .middle-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:18px; margin-bottom:18px; }
+    .section-white { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 16px rgba(0,0,0,.06); }
+    .section-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; color:#1e293b; }
+
+    .features-img-box{
+    text-align:center;
+    padding:25px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#ff6b2b,#f77204);
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    width:260px;
+    margin:auto;
+}
+
+.staff-icon-wrap{
+    width:110px;
+    height:110px;
+    margin:auto;
+    border-radius:50%;
+    background:linear-gradient(135deg,#7c3aed,#5b21b6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:42px;
+    color:white;
+}
+
+.staff-icon-wrap .fa-star{
+    position:absolute;
+    top:10px;
+    right:10px;
+    font-size:18px;
+    color:#facc15;
+}
+
+.acc-label{
+    margin-top:18px;
+    font-size:22px;
+    font-weight:700;
+    color:white;
+}
+
+.acc-sub{
+    margin-top:6px;
+    font-size:14px;
+    color:white;
+}
+    /* FEATURES */
+    .features-flex { display:flex; gap:16px; }
+    .features-img { width:38%; border-radius:10px; object-fit:cover; }
+    .features-buttons { display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1; }
+    .btn-feature { background:linear-gradient(135deg,#f8faff,#eef2ff); border:1px solid #e0e7ff; padding:10px 8px; border-radius:8px; text-align:center; font-size:11px; font-weight:600; color:#3730a3; cursor:pointer; transition:.2s; }
+    .btn-feature:hover { background:linear-gradient(135deg,#4f8ef7,#1a56db); color:white; border-color:transparent; transform:scale(1.03); }
+
+    /* ACTIVITIES */
+    .activities-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+    .activity-item { background:linear-gradient(135deg,#f8faff,#f1f5f9); border:1px solid #e2e8f0; padding:14px 5px; border-radius:10px; text-align:center; cursor:pointer; transition:.25s; }
+    .activity-item:hover { background:linear-gradient(135deg,#ff6b2b,#ff4d00); border-color:transparent; transform:translateY(-3px); box-shadow:0 8px 18px rgba(255,107,43,.3); }
+    .activity-item:hover i, .activity-item:hover p { color:white !important; }
+    .activity-item i { font-size:20px; color:#475569; margin-bottom:6px; display:block; }
+    .activity-item p { font-size:10px; font-weight:600; color:#475569; }
+
+/* ===================================
+   ANNOUNCEMENT SEPARATE BOX
+=================================== */
+.announcement-box{
+    background: linear-gradient(90deg,#fff1f2,#ffffff);
+    padding: 18px 22px;
+    border-radius: 14px;
+    border-left: 5px solid #f43f5e;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+    margin-bottom: 24px;
+}
+
+.announce-title{
+    font-size: 15px;
+    color: #c2410c;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+/* marquee */
+.marquee-wrap{
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.marquee-inner{
+    display: inline-block;
+    padding-left: 100%;
+    animation: marqueeScroll 18s linear infinite;
+}
+
+.marquee-inner:hover{
+    animation-play-state: paused;
+}
+
+.announce-list{
+    list-style: none;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.announce-list li{
+    display: inline-block;
+    margin-right: 70px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@keyframes marqueeScroll{
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+
+/* ===================================
+   3 GRID BOXES SEPARATE
+=================================== */
+.bottom-info-grid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 22px;
+    margin-top: 5px;
+}
+
+.bottom-info-grid .section-white{
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+    min-height: 320px;
+}
+
+.section-title{
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.info-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.info-list li{
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+    color: #475569;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-text{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.empty{
+    color: #94a3b8;
+    text-align: center;
+    display: block;
+}
+
+
+/* ===================================
+   MOBILE RESPONSIVE
+=================================== */
+@media(max-width:1100px){
+    .bottom-info-grid{
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="sidebar">
+    <h1><span style="color:var(--orange);">S</span>CC</h1>
+    <div class="welcome-box">
+        <h3>Welcome Back</h3>
+        <p>{{ request.session.name }}</p>
+    </div>
+    <ul>
+        <li><a href="{% url 'show_staff' %}"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li><a href="{% url 'fill_attendance' %}"><i class="fa-solid fa-list-check"></i> Take Attendance</a></li>
+        <li><a href="{% url 'insert_assignment' %}"><i class="fa-solid fa-book"></i> Give Assignments</a></li>
+        <li><a href="{% url 'show_submissions' %}"><i class="fas fa-folder"></i> View Submissions</a></li>
+        <li><a href="{% url 'insert_StudyMaterial' %}"><i class="fas fa-file"></i><span>Study Materials</span></a></li>
+        <li><a href="{% url 'show_announcements' %}"><i class="fa-solid fa-bullhorn"></i>View Announcements</a></li>
+        <li><a href="{% url 'insert_notifications' %}"><i class="fas fa-bell"></i> Add Notifications</a></li>
+        <li><a href="{% url 'show_attedance' %}"><i class="fas fa-user-check"></i>View Attendance</a></li>
+        <li><a href="{% url 'show_studentdetails' %}"><i class="fas fa-user-graduate"></i>View Students</a></li>
+        <li><a href="{% url 'show_timetable' %}"><i class="fa-solid fa-calendar-week"></i>View Time Table</a></li>
+        <li><a href="{% url 'show_feedback' %}"><i class="fas fa-comments"></i>View Feedback</a></li>
+    </ul>
+    <div class="logout-btn">
+        <a href="{% url 'changepassword' %}">
+            <i class="fa-solid fa-lock"></i> Change Password
+        </a>
+        <a href="{% url 'user_login' %}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </div>
+</div>
+
+<div class="main">
+    <div class="navbar">
+        <h2>Staff Dashboard</h2>
+        <div class="nav-info">
+            <span>Name: {{ request.session.name }}</span>
+            <span>ID: {{ request.session.user_id }}</span>
+            <span>Dept: {{ request.session.department }}</span>
+            <i class="fa fa-user-circle fa-lg" style="margin-left:6px;"></i>
+        </div>
+    </div>
+
+    <div class="content-padding">
+        <p class="section-label">OVERVIEW</p>
+        <div class="cards-container">
+            <div class="card" style="background:var(--blue);"><h2>{{ student_count }}</h2><p>Total Students</p></div>
+            <div class="card" style="background:var(--purple);"><h2>{{ no_of_assignments }}</h2><p>Assignments</p></div>
+            <div class="card" style="background:var(--red);"><h2>{{ total_submissions }}</h2><p>Submissions</p></div>
+            <div class="card" style="background:var(--lime);"><h2>{{ no_of_subjects }}</h2><p>Subjects handled</p></div>
+           <!-- <div class="card" style="background:var(--pink);"><h2>{{ total_materials }}</h2><p>Total Materials</p></div>--> 
+            <div class="card" style="background:var(--brown);"><h2>{{ total_feedbacks }}</h2><p>Feedbacks</p></div>
+     
+        </div>
+
+        <div class="middle-grid">
+            <div class="section-white">
+                <h3 class="section-title">🚀 Staff Features</h3>
+                <div class="features-flex">
+                    <div class="features-img-box">
+                        <div class="staff-icon-wrap">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="acc-label">Staff Portal</div>
+                        <div class="acc-sub">Teaching Access</div>
+                    </div>
+                    <div class="features-buttons">
+                        <div class="btn-feature">Take Attendance</div>
+                        <div class="btn-feature">Manage Assignments</div>
+                        <div class="btn-feature">Upload Materials</div>
+                        <div class="btn-feature">Send Notifications</div>
+                        <div class="btn-feature">Get Announcements</div>
+                        <div class="btn-feature">View Timetable</div>
+                        <div class="btn-feature">Connect Students</div>
+                        <div class="btn-feature">Student Details</div>
+                        <div class="btn-feature">Check Feedback</div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-white">
+                <h3 class="section-title">🖼️ Staff Activities</h3>
+                <div class="activities-grid">
+                    <div class="activity-item"><i class="fa-solid fa-clipboard-check"></i><p>Attendance</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-file-pen"></i><p>Assignment</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-folder-open"></i><p>Materials</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-bell"></i><p>Notification</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-calendar-days"></i><p>Timetable</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-comment-dots"></i><p>Feedback</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-user-tie"></i><p>Student</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-upload"></i><p>Upload</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-bullhorn"></i><p>Announce</p></div>
+                    <div class="activity-item"><i class="fa-solid fa-right-from-bracket"></i><p>Logout</p></div>
+                </div>
+            </div>
+        </div>
+
+        
+<!-- =========================
+     ANNOUNCEMENT BLOCK
+========================= -->
+<div class="announcement-box">
+    <h3 class="announce-title">📣 College Announcements</h3>
+
+    <div class="marquee-wrap">
+        <div class="marquee-inner">
+            <ul class="announce-list">
+                {% for ann in announcements_list %}
+                    <li>{{ ann.massage }}</li>
+                {% empty %}
+                    <li>No announcements available yet</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================
+     3 GRID BOXES
+========================= -->
+<div class="bottom-info-grid">
+
+    <!-- 🔔 Notifications -->
+    <div class="section-white">
+        <h3 class="section-title">🔔 My Recent Notifications</h3>
+
+        <ul class="info-list">
+            {% for n in recent_notifications %}
+            <li>
+                <div class="info-text">
+                    <span>{{ n.message }}</span>
+                </div>
+
+                {% if n.created_at %}
+                <small>{{ n.created_at|date:"d M Y" }}</small>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li class="empty">No notifications added by you</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 📝 Assignments -->
+    <div class="section-white">
+        <h3 class="section-title">📝 My Recent Assignments</h3>
+
+        <ul class="info-list">
+            {% for a in recent_assignments %}
+            <li>
+                <div class="info-text">
+                    <span>{{ a.title }} <small>ID: {{ a.assignment_id }}</small></span>
+                    
+                </div>
+
+                <strong style="color: rgb(233, 21, 21);">{{ a.deadline }}</strong>
+            </li>
+            {% empty %}
+            <li class="empty">No assignments posted</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 💬 Feedback -->
+    <div class="section-white">
+        <h3 class="section-title">💬 My Feedbacks</h3>
+
+        <ul class="info-list">
+            {% for f in my_feedbacks %}
+            <li>
+                <div class="info-text">
+                    <span>"{{ f.comments }}"</span>
+                </div>
+
+                <strong>Grade: {{ f.grade }}</strong>
+            </li>
+            {% empty %}
+            <li class="empty">No feedback received</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

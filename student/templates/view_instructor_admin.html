@@ -1,0 +1,195 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Instructors</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'DM Sans', 'Inter', sans-serif;
+            background-color: #f0f2f9; /* Match admin home background */
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+        }
+        
+        .main-content {
+            margin-left: 270px; /* Offset for new premium sidebar */
+            width: calc(100% - 270px);
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .header-title {
+            font-size: 28px;
+            color: #1e293b;
+            font-weight: 800;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 14px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .no-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .delete-btn {
+            background: #fef2f2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+            transform: translateY(-2px);
+        }
+        
+        .dept-badge {
+            background: #e0f2fe;
+            color: #0284c7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    {% include 'admin_menu.html' %} 
+
+    <div class="main-content">
+        <h2 class="header-title">Instructor Details</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Profile</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Subject</th>
+                        <th>Email</th>
+                        <th>Mobile No</th>
+                        <th>Qualification</th>
+                        <th>Experience</th>
+                        <th>Joining Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in userdict %}
+                    <tr>
+                        <td><strong>#{{ i.instructor_id }}</strong></td>
+                        <td>
+                            {% if i.profile_photo %}
+                            <img src="{{ i.profile_photo.url }}" class="profile-img" alt="Profile">
+                            {% else %}
+                            <div class="no-img"><i class="fas fa-user-tie"></i></div>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ i.name }}</strong></td>
+                        <td><span class="dept-badge">{{ i.department }}</span></td>
+                        <td>{{ i.subject }}</td>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.mobileno }}</td>
+                        <td>{{ i.qualification }}</td>
+                        <td>{{ i.experience }} Yrs</td>
+                        <td>{{ i.joining_date }}</td>
+                        <td>
+                            <a href="{% url 'del_instructor' i.instructor_id %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="11" style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <i class="fas fa-folder-open fa-2x" style="margin-bottom: 10px; display: block;"></i>
+                            No instructors added yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

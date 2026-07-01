@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submission Details</title>
+
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* BODY */
+body {
+    margin: 0;
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    background: #f0f2f9;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    margin-left: 270px;
+    padding: 40px;
+}
+
+/* TITLE */
+.header-title {
+    font-size: 28px;
+    color: #1e293b;
+    font-weight: 800;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* FILTER CARD */
+.filter-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.filter-box form {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-box label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.filter-box select {
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    min-width: 250px;
+    font-size: 14px;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-primary {
+       background:linear-gradient(135deg,#ff8c21,#fb5215);
+    color: white;
+}
+
+.btn-danger {
+    background: #ff8c21;
+    color: white;
+    border: 1px solid #e2e8f0;
+}
+
+/* TABLE CARD */
+.table-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th {
+    background:linear-gradient(135deg,#ff8c21,#fb5215);
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+/* FILE LINK */
+.file-link {
+    color: #0ea5e9;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+/* STATUS BADGE */
+.status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status.pending {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.status.approved {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status.rejected {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* DELETE */
+.delete-btn a {
+    color: #ef4444;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.delete-btn a:hover {
+    text-decoration: underline;
+}
+
+/* EMPTY */
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    .main-content {
+        margin-left: 70px;
+        padding: 20px;
+    }
+
+    .filter-box form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    table th, table td {
+        font-size: 12px;
+        padding: 10px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'staff_menu.html' %}
+
+<div class="main-content">
+
+<h2 class="header-title">Assignment Submissions</h2>
+
+<!-- FILTER -->
+<div class="filter-box">
+<form method="GET">
+
+<label>Filter Assignment:</label>
+
+<select name="assignment_id">
+<option value="">All Assignments</option>
+
+{% for a in my_assignments %}
+<option value="{{ a.assignment_id }}" {% if selected_assignment == a.assignment_id %}selected{% endif %}>
+{{ a.title }}
+</option>
+{% endfor %}
+
+</select>
+
+<button type="submit" class="btn btn-primary">
+<i class="fas fa-filter"></i> Apply
+</button>
+
+<a href="{% url 'show_submissions' %}" class="btn btn-danger">
+<i class="fas fa-times"></i> Clear
+</a>
+
+</form>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+
+<table>
+<tr>
+<th>Assignment ID</th>
+<th>Student ID</th>
+<th>File</th>
+<th>Submitted Date</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for i in data %}
+<tr>
+<td>{{ i.Assignments_id }}</td>
+<td>{{ i.Student_id }}</td>
+
+<td>
+{% if i.file_url %}
+<a href="{{ i.file_url.url }}" target="_blank" class="file-link">View File</a>
+{% else %}
+No File
+{% endif %}
+</td>
+
+<td>{{ i.submitted_date }}</td>
+
+<td>
+<span class="status {{ i.status|lower }}">
+{{ i.status }}
+</span>
+</td>
+
+<td class="delete-btn">
+<a href="{% url 'del_submissions' i.id %}">Delete</a>
+</td>
+
+</tr>
+{% empty %}
+<tr>
+<td colspan="6" class="no-data">
+<i class="fas fa-folder-open fa-2x"></i><br>
+No submissions found
+</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

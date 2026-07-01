@@ -1,0 +1,175 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Feedbacks</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'DM Sans', 'Inter', sans-serif;
+            background-color: #f0f2f9; /* Match admin home background */
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+        }
+        
+        .main-content {
+            margin-left: 270px; /* Offset for new premium sidebar */
+            width: calc(100% - 270px);
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .header-title {
+            font-size: 28px;
+            color: #1e293b;
+            font-weight: 800;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 14px;
+            vertical-align: middle;
+            white-space: normal; /* wrap long feedback comments */
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+        
+        .feedback-icon {
+            color: #8b5cf6;
+            font-size: 20px;
+            background: #ede9fe;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .delete-btn {
+            background: #fef2f2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+            transform: translateY(-2px);
+        }
+        
+        .grade-badge {
+            background: #ffedd5;
+            color: #ea580c;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    {% include 'admin_menu.html' %} 
+
+    <div class="main-content">
+        <h2 class="header-title">Student Feedbacks</h2>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="5%">Icon</th>
+                        <th width="15%">Instructor ID</th>
+                        <th width="10%">Grade</th>
+                        <th width="15%">Date Given</th>
+                        <th width="40%">Feedback Comments</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in userdict %}
+                    <tr>
+                        <td>
+                            <div class="feedback-icon"><i class="fas fa-comment-dots"></i></div>
+                        </td>
+                        <td><strong>{{ i.instructor_id }}</strong></td>
+                        <td><span class="grade-badge">{{ i.grade }}</span></td>
+                        <td><i class="fas fa-calendar-alt" style="color: #94a3b8; margin-right: 4px;"></i> {{ i.given_date }}</td>
+                        <td style="font-style: italic; color: #475569;">"{{ i.comments }}"</td>
+                        <td>
+                            <a href="{% url 'del_feedback' i.id %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <i class="fas fa-inbox fa-2x" style="margin-bottom: 10px; display: block;"></i>
+                            No feedbacks recieved yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Announcements</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'DM Sans', 'Inter', sans-serif;
+            background-color: #f0f2f9; 
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+        }
+        
+        .main-content {
+            margin-left: 270px; 
+            width: calc(100% - 270px);
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .form-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 30px;
+        }
+
+        .header-title {
+            font-size: 26px;
+            color: #1e293b;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .header-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box span {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .input-box input, 
+        .input-box textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-box textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .input-box input:focus, 
+        .input-box textarea:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+            background: #fff;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        }
+        
+        @media(max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .form-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'admin_menu.html' %}
+    
+    <div class="main-content">
+        <div class="form-container">
+            <div class="header-title">Post Announcement</div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-grid">
+                    <div class="input-box">
+                        <span>Announcement ID</span>
+                        <input type="text" name="t1" placeholder="Unique Announcement ID" required pattern="[0-9]+">
+                    </div>
+
+                    <div class="input-box">
+                        <span>Publish Date</span>
+                        <input type="date" name="t3" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Message Payload</span>
+                        <textarea name="t2" placeholder="Write your announcement details here... It will automatically be syndicated to user dashboards." required></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn"><i class="fas fa-bullhorn" style="margin-right:8px;"></i> BROADCAST ANNOUNCEMENT</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

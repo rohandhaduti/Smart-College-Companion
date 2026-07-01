@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Attendance</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+  --orange: #FF7B00;
+  --sidebar-bg: rgba(10, 10, 15, 0.95);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --text-main: #333;
+  --accent-grad:linear-gradient(135deg, #934abe, #de5ce0);
+  --accent-gradient: linear-gradient(135deg, #934abe, #de5ce0);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f7f6;
+  color: var(--text-main);
+}
+
+/* Sidebar */
+.sidebar { 
+  width: 250px; 
+  height: 100vh; 
+  background: var(--sidebar-bg); 
+  position: fixed; 
+  top: 0; left: 0;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* Card Container */
+.form-container {
+  width: 100%;
+  max-width: 700px;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Title */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ef3479;
+}
+
+h1::after {
+  content: '';
+  width: 60px;
+  height: 4px;
+  background: var(--accent-gradient);
+  display: block;
+  margin: 10px auto;
+  border-radius: 2px;
+}
+
+/* Inputs */
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 8px rgba(255,123,0,0.2);
+}
+
+/* Button */
+input[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-grad);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Table */
+table {
+  width: 100%;
+  margin-top: 25px;
+  border-collapse: collapse;
+}
+
+th {
+  background: var(--accent-gradient);
+  color: white;
+}
+
+td, th {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #fff4ec;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar { width: 70px; }
+  .main-content { margin-left: 70px; padding: 20px; }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+
+  <div class="form-container">
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <h1>Attendance Records</h1>
+
+      <input type="text" name="t1" placeholder="Enter Student ID" required>
+
+      <input type="submit" value="View Attendance">
+
+    </form>
+
+    <!-- TABLE -->
+    {% if userdict %}
+    <table>
+      <tr>
+        <th>Subject</th>
+        <th>Total Classes</th>
+        <th>Attended Classes</th>
+        <th>Percentage</th>
+      </tr>
+
+      {% for i in userdict %}
+      <tr>
+        <td>{{ i.subject }}</td>
+        <td>{{ i.total_classes }}</td>
+        <td>{{ i.attended_classes }}</td>
+         <td>{{ i.percentage|floatformat:2 }}%</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+    {% endif %}
+
+  </div>
+
+</div>
+
+</body>
+</html>

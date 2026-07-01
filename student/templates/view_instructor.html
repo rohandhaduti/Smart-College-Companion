@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructor Details</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+  --sidebar-bg: rgba(10, 10, 15, 0.95);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --text-main: #333;
+  --accent-gradient: linear-gradient(135deg, #7c3aed, #a855f7);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f7f6;
+}
+
+/* ✅ SIDEBAR */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: var(--sidebar-bg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  padding: 12px 20px;
+  display: block;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ✅ MAIN CONTENT */
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ✅ CARD */
+.container {
+  width: 100%;
+  max-width: 900px;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ✅ TITLE */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #6b21a8;
+}
+
+h2::after {
+  content: '';
+  width: 60px;
+  height: 4px;
+  background: var(--accent-gradient);
+  display: block;
+  margin: 10px auto;
+}
+
+/* ✅ TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background: var(--accent-gradient);
+  color: white;
+}
+
+td, th {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #f3e8ff;
+}
+
+/* ✅ RESPONSIVE */
+@media(max-width:768px){
+  .sidebar { width: 70px; }
+  .main-content { margin-left: 70px; padding: 20px; }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+
+  <div class="container">
+
+    <h2>Instructor Details</h2>
+
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+
+      {% for i in userdict %}
+      <tr>
+        <td>{{ i.instructor_id }}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.email }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+
+</div>
+
+</body>
+</html>

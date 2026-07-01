@@ -1,0 +1,260 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Time Table</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'DM Sans', 'Inter', sans-serif;
+            background-color: #f0f2f9; 
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+        }
+        
+        .main-content {
+            margin-left: 270px; 
+            width: calc(100% - 270px);
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        .header-title {
+            font-size: 26px;
+            color: #1e293b;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .header-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box span {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .input-box input, 
+        .input-box select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-box input:focus, 
+        .input-box select:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+            background: #fff;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        }
+
+        .alert {
+            width: 100%;
+            max-width: 800px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-left: 5px solid #ef4444;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #15803d;
+            border-left: 5px solid #22c55e;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media(max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .form-container {
+                padding: 25px;
+            }
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'admin_menu.html' %}
+    
+    <div class="main-content">
+        <!-- Backend Verification Messages -->
+        {% if error_msg %}
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-triangle fa-lg"></i>
+            {{ error_msg }}
+        </div>
+        {% endif %}
+        
+        {% if success_msg %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle fa-lg"></i>
+            {{ success_msg }}
+        </div>
+        {% endif %}
+
+        <div class="form-container">
+            <div class="header-title">Schedule Timetable</div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-grid">
+                    <div class="input-box">
+                        <span>Department</span>
+                        <select name="t1" required>
+                            <option value="" disabled selected>Select Department</option>
+                            <option value="BA">BA</option>
+                            <option value="BCOM">BCOM</option>
+                            <option value="BSC">BSC</option>
+                            <option value="BBA">BBA</option>
+                            <option value="BCA">BCA</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Semester</span>
+                        <select name="t2" required>
+                            <option value="" disabled selected>Select Semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box" style="grid-column: 1 / -1;">
+                        <span>Subject Name</span>
+                        <input type="text" name="t3" placeholder="Enter specific subject name" required>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Day of Week</span>
+                        <select name="t4" required>
+                            <option value="" disabled selected>Select Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <span>Time Slot</span>
+                        <select name="t5" required>
+                            <option value="" disabled selected>Select Time Slot</option>
+                            <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                            <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                            <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                            <option value="12:00 PM - 01:00 PM">12:00 PM - 01:00 PM</option>
+                            <option value="01:00 PM - 02:00 PM">01:00 PM - 02:00 PM</option>
+                            <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                            <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box" style="grid-column: 1 / -1;">
+                        <span>Instructor ID</span>
+                        <input type="text" name="t6" placeholder="Enter assigned Instructor's ID to check availability" required pattern="[0-9]+">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn"><i class="fas fa-calendar-check" style="margin-right:8px;"></i> CHECK & ASSIGN TIMETABLE</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

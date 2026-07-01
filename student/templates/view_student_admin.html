@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'DM Sans', 'Inter', sans-serif;
+            background-color: #f0f2f9;
+            /* Match admin home background */
+            margin: 0px;
+            padding: 0px;
+            display: flex;
+        }
+
+        .main-content {
+            margin-left: 270px;
+            /* Offset for new premium sidebar */
+            width: calc(100% - 270px);
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .header-title {
+            font-size: 28px;
+            color: #1e293b;
+            font-weight: 800;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 14px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .no-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .delete-btn {
+            background: #fef2f2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+            transform: translateY(-2px);
+        }
+
+        .dept-badge {
+            background: #e0f2fe;
+            color: #0284c7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .sem-badge {
+            background: #ffedd5;
+            color: #ea580c;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .filter-section {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+            background: #fff;
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 44px;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .clear-btn {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .clear-btn:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'admin_menu.html' %}
+
+    <div class="main-content">
+        <h2 class="header-title">Student Details</h2>
+
+        <div class="filter-section">
+            <form method="GET" class="filter-form">
+<div class="filter-group">
+    <label>Filter by Department</label>
+    <select name="department" required>
+
+        <option value="SELECT" {% if selected_dept == 'SELECT' %}selected{% endif %}>SELECT</option>
+
+        <option value="BA" {% if selected_dept == 'BA' %}selected{% endif %}>BA</option>
+
+        <option value="BCOM" {% if selected_dept == 'BCOM' %}selected{% endif %}>BCOM</option>
+
+        <option value="BSC" {% if selected_dept == 'BSC' %}selected{% endif %}>BSC</option>
+
+        <option value="BBA" {% if selected_dept == 'BBA' %}selected{% endif %}>BBA</option>
+
+        <option value="BCA" {% if selected_dept == 'BCA' %}selected{% endif %}>BCA</option>
+
+    </select>
+</div>
+
+
+<div class="filter-group">
+    <label>Filter by Semester</label>
+    <select name="sem" required>
+
+        <option value="SELECT" {% if selected_sem == 'SELECT' %}selected{% endif %}>SELECT</option>
+
+        <option value="1" {% if selected_sem == '1' %}selected{% endif %}>Semester 1</option>
+        <option value="2" {% if selected_sem == '2' %}selected{% endif %}>Semester 2</option>
+        <option value="3" {% if selected_sem == '3' %}selected{% endif %}>Semester 3</option>
+        <option value="4" {% if selected_sem == '4' %}selected{% endif %}>Semester 4</option>
+        <option value="5" {% if selected_sem == '5' %}selected{% endif %}>Semester 5</option>
+        <option value="6" {% if selected_sem == '6' %}selected{% endif %}>Semester 6</option>
+
+    </select>
+</div>
+                <button type="submit" class="filter-btn"><i class="fas fa-filter"></i> Apply</button>
+                <a href="{% url 'show_student_admin' %}" class="clear-btn"><i class="fas fa-times"></i> Clear</a>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Icon</th>
+                        <th>Reg / Student ID</th>
+                        <th>Full Name</th>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>Email Address</th>
+                        <th>Mobile Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in userdict %}
+                    <tr>
+                        <td>
+                            <div class="no-img"><i class="fas fa-user-graduate"></i></div>
+                        </td>
+                        <td><strong>{{ i.student_id }}</strong></td>
+                        <td><strong>{{ i.name }}</strong></td>
+                        <td><span class="dept-badge">{{ i.department }}</span></td>
+                        <td><span class="sem-badge">Sem {{ i.sem }}</span></td>
+                        <td>Year {{ i.year }}</td>
+                        <td>{{ i.email_id }}</td>
+                        <td>{{ i.mobile_no }}</td>
+                        <td>
+                            <a href="{% url 'del_student' i.id %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <i class="fas fa-folder-open fa-2x" style="margin-bottom: 10px; display: block;"></i>
+                            No students enrolled yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

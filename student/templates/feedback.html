@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Details</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+  --orange: #FF7B00;
+  --sidebar-bg: rgba(10, 10, 15, 0.95);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --text-main: #333;
+    --accent-grad:linear-gradient(135deg, #934abe, #f74bfa);
+    --accent-gradient: linear-gradient(135deg, #934abe, #de5ce0);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f4f7f6;
+  color:var(--text-main);
+}
+
+/* Sidebar handled by student_menu */
+
+/* Main Content */
+.main-content{
+  margin-left:250px;
+  padding:40px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+/* Card */
+.container{
+  width:100%;
+  max-width:500px;
+  background:var(--card-bg);
+  padding:30px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.title{
+  color: #ef3479;
+  font-size:1.6rem;
+  font-weight:600;
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.title::after{
+  content:'';
+  width:60px;
+  height:4px;
+  background:var(--accent-gradient);
+  display:block;
+  margin:10px auto;
+  border-radius:2px;
+}
+
+/* Form */
+.input-box{
+  margin-bottom:15px;
+}
+
+.input-box span{
+  display:block;
+  font-weight:600;
+  font-size:0.9rem;
+  margin-bottom:6px;
+  color: #333;
+  margin-left: 5px;
+}
+
+.input-box input,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  outline:none;
+  font-size:0.95rem;
+  transition:0.3s;
+}
+
+.input-box input:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 8px rgba(255,123,0,0.2);
+}
+
+/* Button */
+.button input{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:var(--accent-grad);
+  color:white;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.button input:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 15px rgba(255,123,0,0.4);
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .main-content{
+    margin-left:70px;
+    padding:20px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+  <div class="container">
+
+    <div class="title">Give Feedback</div>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="input-box">
+        <span>Instructor ID</span>
+        <input type="text" name="t1" placeholder="Enter Instructor ID" required pattern="[0-9]+">
+      </div>
+
+    
+      <div class="input-box">
+        <span>Comments</span>
+        <textarea type="textarea" name="t2" placeholder="Comment" required pattern="[0-9]+"></textarea>
+      </div>
+
+      <div class="input-box">
+        <span>Grade</span>
+        <input type="text" name="t3" placeholder="Enter Grade" required>
+      </div>
+
+      <div class="input-box">
+        <span>Given Date</span>
+        <input type="date" name="t4"  required>
+      </div>
+    
+
+      <div class="button">
+        <input type="submit" value="Submit Feedback">
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>

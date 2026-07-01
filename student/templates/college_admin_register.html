@@ -1,0 +1,95 @@
+<!-- templates/college_admin_register.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>College Admin Registration</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f6f9;
+}
+.box{
+    width:420px;
+    margin:60px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+input{
+    width:100%;
+    padding:10px;
+    margin-bottom:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    box-sizing:border-box;
+}
+button{
+    width:100%;
+    padding:12px;
+    background:#ff7b00;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+}
+button:hover{
+    background:#e66d00;
+}
+.msg{
+    color:red;
+    text-align:center;
+    margin-bottom:10px;
+}
+.success{
+    color:green;
+}
+a{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+
+<h2>College Admin Register</h2>
+
+{% for message in messages %}
+<p class="{% if message.tags == 'success' %}success{% else %}msg{% endif %}">
+{{ message }}
+</p>
+{% endfor %}
+
+<form method="POST">
+{% csrf_token %}
+
+<input type="text" name="college_name" placeholder="College Name" required>
+
+<input type="email" name="email" placeholder="Official Email ID" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<input type="password" name="confirm_password" placeholder="Confirm Password" required>
+
+<input type="text" name="access_code" placeholder="Registration Access Code" required>
+
+<button type="submit">Register Admin</button>
+
+</form>
+
+<a href="{% url 'user_login' %}">Back to Login</a>
+
+</div>
+
+</body>
+</html>

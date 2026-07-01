@@ -1,0 +1,44 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+<div class="sidebar">
+    <h1><span style="color:var(--orange);">S</span>CC</h1>
+
+    <div class="welcome-box">
+        <h3>Welcome Back</h3>
+        <p>{{ request.session.name }}</p>
+    </div>
+
+    <ul>
+        <li><a href="{% url 'show_staff' %}" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
+
+        <li><a href="{% url 'fill_attendance' %}"><i class="fa-solid fa-list-check"></i><span>Take Attendance</span></a></li>
+
+        <li><a href="{% url 'insert_assignment' %}"><i class="fa-solid fa-book"></i><span>Give Assignments</span></a></li>
+
+        <li><a href="{% url 'show_submissions' %}"><i class="fas fa-folder"></i><span>View Submissions</span></a></li>
+
+        <li><a href="{% url 'show_announcements' %}"><i class="fa-solid fa-bullhorn"></i><span>Announcements</span></a></li>
+
+        <li><a href="{% url 'insert_StudyMaterial' %}"><i class="fas fa-file"></i><span>Study Materials</span></a></li>
+
+        <li><a href="{% url 'insert_notifications' %}"><i class="fas fa-bell"></i><span>Notifications</span></a></li>
+
+        <li><a href="{% url 'show_attedance' %}"><i class="fas fa-user-check"></i><span>Attendance</span></a></li>
+
+        <li><a href="{% url 'show_studentdetails' %}"><i class="fas fa-user-graduate"></i><span>Students</span></a></li>
+
+        <li><a href="{% url 'show_timetable' %}"><i class="fa-solid fa-calendar-week"></i><span>Time Table</span></a></li>
+
+        <li><a href="{% url 'show_feedback' %}"><i class="fas fa-comments"></i><span>Feedback</span></a></li>
+    </ul>
+
+    <div class="logout-btn">
+        <a href="{% url 'changepassword' %}">
+            <i class="fa-solid fa-lock"></i> Change Password
+        </a>
+        <a href="{% url 'user_login' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</div>

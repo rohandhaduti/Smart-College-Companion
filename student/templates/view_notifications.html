@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+  --accent-grad: linear-gradient(135deg, #934abe, #de5ce0);
+  --card-bg: rgba(255, 255, 255, 0.96);
+    --sidebar-bg: rgba(10, 10, 15, 0.95);
+
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* BODY */
+body {
+  background: #f4f7f6;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* CARD */
+.container {
+  width: 100%;
+  max-width: 900px;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #e748a7;
+}
+
+h1::after {
+  content: '';
+  width: 60px;
+  height: 4px;
+  background: var(--accent-gradient);
+  display: block;
+  margin: 10px auto;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background: var(--accent-grad);
+  color: white;
+}
+
+td, th {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #f3e8ff;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  color: #dc2626;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.delete-btn:hover {
+  text-decoration: underline;
+}
+
+/* EMPTY */
+.no-data {
+  text-align: center;
+  padding: 15px;
+  color: #777;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .main-content { margin-left: 70px; padding: 20px; }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+
+  <div class="container">
+
+    <h1>Notifications</h1>
+
+    <table>
+      <tr>
+        <th>Given By</th>
+        <th>Message</th>
+        <th>Type</th>
+      </tr>
+
+      {% for i in userdict %}
+      <tr>
+        <td>{{ i.given_by }}</td>
+        <td>{{ i.message }}</td>
+        <td>{{ i.type }}</td>
+        
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="no-data">No notifications available</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+
+  </div>
+
+</div>
+
+</body>
+</html>

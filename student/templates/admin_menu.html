@@ -1,0 +1,56 @@
+{% load static %}
+<!-- PREMIUM SIDEBAR FOR ALL ADMIN PAGES -->
+
+
+<div class="premium-sidebar">
+    <div class="sidebar-logo">
+        <i class="fas fa-graduation-cap"></i> <span>Smart</span>College
+    </div>
+    
+    <div class="user-profile">
+        <div class="avatar">
+            <i class="fas fa-user-shield"></i>
+        </div>
+        <div class="info">
+            <h4>{{ request.user.get_full_name|default:"Administrator" }}</h4>
+            <p>Admin Panel</p>
+        </div>
+    </div>
+    
+    <div class="menu-category">Dashboard</div>
+    <ul class="nav-list">
+        <li><a href="{% url 'show_admin' %}"><i class="fas fa-home"></i><span>Overview</span></a></li>
+    </ul>
+
+    <div class="menu-category">Management</div>
+    <ul class="nav-list">
+        <li><a href="{% url 'insert_instructor' %}"><i class="fas fa-chalkboard-user"></i><span>Add Instructor</span></a></li>
+        <li><a href="{% url 'insert_student' %}"><i class="fas fa-user-graduate"></i><span>Add Student</span></a></li>
+        <li><a href="{% url 'show_instructor_admin' %}"><i class="fas fa-user-tie"></i><span>Instructors</span></a></li>
+        <li><a href="{% url 'show_student_admin' %}"><i class="fas fa-user-tie"></i><span>Students</span></a></li>
+    
+    </ul>
+
+    <div class="menu-category">Academics</div>
+    <ul class="nav-list">
+        <li><a href="{% url 'show_department_admin' %}"><i class="fas fa-users"></i><span>Departments</span></a></li>
+        <li><a href="{% url 'insert_department' %}"><i class="fas fa-building-columns"></i><span>Add Department</span></a></li>
+        <li><a href="{% url 'insert_subjects' %}"><i class="fas fa-book-open"></i><span>Subjects</span></a></li>
+        <li><a href="{% url 'insert_timetable' %}"><i class="fas fa-calendar-week"></i><span>Time Table</span></a></li>
+    </ul>
+
+    <div class="menu-category">Communications</div>
+    <ul class="nav-list">
+        <li><a href="{% url 'insert_announcements' %}"><i class="fas fa-bullhorn"></i><span>Announcements</span></a></li>
+        <li><a href="{% url 'show_feedback_admin' %}"><i class="fas fa-comments"></i><span>View Feedback</span></a></li>
+    </ul>
+    
+    <div class="bottom-panel">
+        <a href="{% url 'changepassword' %}" class="logout-btn-premium">
+            <i class="fa-solid fa-lock"></i> Change Password
+        </a>
+        <a href="{% url 'user_login' %}" class="logout-btn-premium">
+            <i class="fas fa-power-off"></i><span>Logout</span>
+        </a>
+    </div>
+</div>

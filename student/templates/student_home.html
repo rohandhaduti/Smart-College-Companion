@@ -1,0 +1,387 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --orange: #de70c6;
+        --sidebar-bg: #0d0d1a;
+        --blue:   linear-gradient(135deg,#4f8ef7,#1a56db);
+        --purple: linear-gradient(135deg,#a855f7,#7c3aed);
+        --red:    linear-gradient(135deg,#f43f5e,#be123c);
+        --lime:   linear-gradient(135deg,#a3e635,#65a30d);
+        --brown:  linear-gradient(135deg,#f97316,#c2410c);
+        --pink:   linear-gradient(135deg,#ec4899,#9d174d);
+        --bg: #f0f2f9;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'DM Sans',sans-serif; }
+    html, body { width:100%; overflow-x:hidden; }
+    body { background:var(--bg); display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    .sidebar { width:240px; height:100vh; background:var(--sidebar-bg); position:fixed; color:white; overflow-y:auto; z-index:100; }
+    .sidebar h1 { text-align:center; padding:22px 0 10px; font-family:'Syne',sans-serif; font-size:2.2rem; letter-spacing:3px; }
+    .welcome-box { background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(255,107,43,.05)); border:1px solid rgba(255,107,43,.4); margin:10px; padding:14px; border-radius:12px; text-align:center; }
+    .welcome-box h3 { color:var(--orange); font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+    .welcome-box p { font-size:13px; color:#e2e8f0; font-weight:500; }
+    .sidebar-section-label { padding:14px 14px 4px; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(215, 84, 235, 0.6); font-weight:700; }
+    .sidebar ul { list-style:none; margin-top:4px; padding:0 8px; }
+    .sidebar ul li a { color:#94a3b8; text-decoration:none; padding:10px 14px; display:flex; align-items:center; transition:.25s; font-size:13px; border-radius:8px; margin-bottom:2px; }
+    .sidebar ul li a i { width:22px; margin-right:10px; color:var(--orange); }
+    .sidebar ul li a:hover { background:rgba(179, 48, 250, 0.18); color:white; transform:translateX(4px); }
+    .logout-btn { padding:16px 16px; border-top:1px solid #1e2238; margin-top:10px; }
+    .logout-btn a { color:#94a3b8; text-decoration:none; font-size:13px; display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px; transition:.25s; }
+    .logout-btn a:hover { background:rgba(244,63,94,.2); color:#f43f5e; }
+
+    /* MAIN */
+    .main { width:calc(100% - 240px); margin-left:240px; min-height:100vh; overflow-x:hidden; }
+
+    /* NAVBAR */
+    .navbar {
+    background: linear-gradient(90deg, #e27bc3, #7f44bb);color:white; padding:14px 28px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:90; box-shadow:0 4px 20px rgba(255,107,43,.35); }
+    .navbar h2 { font-family:'Syne',sans-serif; font-size:20px; letter-spacing:1px; }
+    .nav-info { display:flex; align-items:center; gap:8px; font-size:13px; }
+    .nav-info span { background:rgba(255,255,255,.2); padding:4px 12px; border-radius:20px; }
+    .nav-logout { background:rgba(255,255,255,.18); border:1.5px solid rgba(255,255,255,.55); color:#fff; padding:6px 14px; border-radius:8px; text-decoration:none; font-size:12px; font-weight:600; display:flex; align-items:center; gap:6px; transition:.2s; }
+    .nav-logout:hover { background:rgba(255,255,255,.3); }
+
+    /* CONTENT */
+    .content-padding { padding:22px; }
+    .section-label {  font-family:'Syne',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#94a3b8; margin-bottom:12px; }
+
+   /* CARDS */
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(140px, 1fr));
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+    }    
+    .card {
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    }
+    .card h2 {
+        font-size: 20px;
+    }
+    .card i {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    .card p {
+        font-size: 10px;
+    }
+
+    /* MIDDLE GRID */
+    .middle-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:18px; margin-bottom:18px; }
+    .section-white { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 16px rgba(0,0,0,.06); }
+    .section-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; color:#1e293b; }
+
+    /* FEATURES */
+    .features-flex { display:flex; gap:16px; }
+    .features-img-box { width:38%; border-radius:10px; background:linear-gradient(135deg,#1a1a35,#0d0d1a); border:1px solid rgba(255,107,43,.3); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px 12px; text-align:center; flex-shrink:0; }
+    .student-icon-wrap { position:relative; display:inline-block; width:56px; height:56px; }
+    .student-icon-wrap .fa-user-graduate { font-size:50px; color:#e2e8f0; }
+    .student-icon-wrap .fa-star { font-size:20px; color:var(--orange); position:absolute; bottom:-4px; right:-8px; }
+    .features-img-box .acc-label { font-size:13px; font-weight:600; color:#e2e8f0; margin-top:8px; font-family:'Syne',sans-serif; }
+    .features-img-box .acc-sub { font-size:10px; color:#94a3b8; }
+    .features-buttons { display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1; }
+    .btn-feature { background:linear-gradient(135deg,#f8faff,#eef2ff); border:1px solid #e0e7ff; padding:10px 8px; border-radius:8px; text-align:center; font-size:11px; font-weight:600; color:#3730a3; cursor:pointer; transition:.2s; text-decoration:none; display:block; }
+    .btn-feature:hover { background:linear-gradient(135deg,#4f8ef7,#1a56db); color:white; border-color:transparent; transform:scale(1.03); }
+
+    /* ACTIVITIES */
+    .activities-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .activity-item { background:linear-gradient(135deg,#f8faff,#f1f5f9); border:1px solid #e2e8f0; padding:14px 5px; border-radius:10px; text-align:center; cursor:pointer; transition:.25s; text-decoration:none; display:block; }
+    .activity-item:hover { background:linear-gradient(135deg,#ff6b2b,#ff4d00); border-color:transparent; transform:translateY(-3px); box-shadow:0 8px 18px rgba(255,107,43,.3); }
+    .activity-item:hover i, .activity-item:hover p { color:white !important; }
+    .activity-item i { font-size:20px; color:#475569; margin-bottom:6px; display:block; }
+    .activity-item p { font-size:10px; font-weight:600; color:#475569; }
+
+   /* =====================================
+   NOTIFICATION BAR
+===================================== */
+.notif-bar {
+    background: linear-gradient(90deg, #fff1f2, white);
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    border-left: 5px solid #f43f5e;
+    font-size: 13px;
+    box-shadow: 0 2px 10px rgba(244,63,94,.08);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+}
+
+/* LABEL */
+.notif-bar strong {
+    color: #f43f5e;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+/* MARQUEE CONTAINER */
+.notif-bar .marquee-wrap {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+}
+
+/* MOVING CONTENT */
+.notif-bar .marquee-inner {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: marqueeScroll 20s linear infinite;
+}
+
+/* TEXT STYLE */
+.notif-bar .marquee-inner span,
+.notif-bar .marquee-inner li {
+    display: inline-block;
+    margin-right: 50px;
+    color: #475569;
+    font-weight: 500;
+}
+
+/* ANIMATION RIGHT TO LEFT */
+@keyframes marqueeScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* PAUSE ON HOVER */
+.notif-bar:hover .marquee-inner {
+    animation-play-state: paused;
+}
+
+/* =====================================
+   BOTTOM GRID
+===================================== */
+.bottom-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 18px;
+}
+
+/* LIST */
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    color: #475569;
+}
+
+/* HIGHLIGHT TEXT */
+.info-list li strong {
+    color: #ff6b2b;
+    font-weight: 800;
+}
+
+    /* RESPONSIVE */
+    @media(max-width:1200px){ .cards-container{grid-template-columns:repeat(3,1fr);} .middle-grid{grid-template-columns:1fr;} .bottom-info-grid{grid-template-columns:1fr 1fr;} }
+    @media(max-width:768px){
+        .sidebar{width:60px;} .main{margin-left:60px; width:calc(100% - 60px);}
+        .welcome-box,.sidebar-section-label,.sidebar ul li a span{display:none;}
+        .sidebar ul li a{justify-content:center; padding:14px;}
+        .cards-container{grid-template-columns:repeat(2,1fr);}
+        .bottom-info-grid{grid-template-columns:1fr;}
+    }
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h1><span style="color:var(--orange );">S</span>CC</h1>
+    <div class="welcome-box">
+        <h3>Student Portal</h3>
+        <p>{{ request.session.name|default:"Student" }}</p>
+    </div>
+    <div class="sidebar-section-label">Student Menus</div>
+    <ul>
+        <li><a href="{% url 'show_student' %}"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li><a href="{% url 'show_assignment' %}"><i class="fas fa-tasks"></i><span>View Assignment</span></a></li>
+        <li><a href="{% url 'insert_submissions' %}"><i class="fas fa-upload"></i><span>Submission</span></a></li>
+        <li><a href="{% url 'insert_feedback' %}"><i class="fas fa-comment-dots"></i><span>Feedback</span></a></li>
+        <li><a href="{% url 'show_student_attendance' %}"><i class="fas fa-user-check"></i><span>View Attendance</span></a></li>
+        <li><a href="{% url 'show_StudyMaterial' %}"><i class="fa-solid fa-book-open"></i> Study Materials</a></li>
+        <li><a href="{% url 'show_subjects' %}"><i class="fas fa-book"></i><span>View Subjects</span></a></li>
+        <li><a href="{% url 'show_announcements' %}"><i class="fas fa-bullhorn"></i><span>Announcements</span></a></li>
+        <li><a href="{% url 'view_notifications' %}"><i class="fas fa-bell"></i><span>Notifications</span></a></li>
+        <li><a href="{% url 'show_timetable_student' %}"><i class="fas fa-calendar-alt"></i><span>View Timetable</span></a></li>
+    </ul>
+    <div class="logout-btn">
+        <a href="{% url 'changepassword' %}"><i class="fa-solid fa-lock"></i>Change Password</a>
+        <a href="{% url 'user_login' %}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>Student Dashboard</h2>
+        <div class="nav-info">
+            <span>{{ student.name }}</span>
+            <span>ID: {{ student.student_id }}</span>
+            <span>Dept: {{ student.department }}</span> 
+            <i class="fa fa-user-circle fa-lg" style="margin-left:6px;"></i>
+            
+        </div>
+    </div>
+
+    <div class="content-padding">
+        <p class="section-label">OVERVIEW</p>
+
+        <!-- Stat Cards -->
+        <div class="cards-container">
+           <!--  <div class="card" style="background:var(--blue);">
+                <i class="fas fa-book-open"></i>
+                <h2>{{ subject_count }}</h2>
+                <p>Subjects</p>
+            </div>
+            -->
+            
+            <div class="card" style="background:var(--purple);">
+                <i class="fas fa-bullhorn"></i>
+                <h2>{{ announcements_list|length }}</h2>
+                <p>New Announces</p>
+            </div>
+            <div class="card" style="background:var(--red);">
+                <i class="fas fa-tasks"></i>
+                <h2>{{ assignment_count }}</h2>
+                <p>Assignments</p>
+            </div>
+            <div class="card" style="background:var(--pink);">
+                <i class="fas fa-bell"></i>
+                <h2>{{ notif_count }}</h2>
+                <p>Notifications</p>
+            </div>
+            <div class="card" style="background:var(--orange);">
+                <i class="fa-solid fa-book-open"></i>
+                <h2>{{ study_materials_count }}</h2>
+                <p>Study Materials</p>
+            </div>
+        </div>
+
+        <!-- Middle Grid -->
+        <div class="middle-grid">
+
+            <!-- Student Features -->
+            <div class="section-white">
+                <h3 class="section-title">🎓 Student Features</h3>
+                <div class="features-flex">
+                    <div class="features-img-box">
+                        <div class="student-icon-wrap">
+                            <i class="fas fa-user-graduate"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="acc-label">Student Portal</div>
+                        <div class="acc-sub">Academic Access</div>
+                    </div>
+                    <div class="features-buttons">
+                        <a href="#" class="btn-feature">View Assignments</a>
+                        <a href="#" class="btn-feature">Submit Work</a>
+                        <a href="#" class="btn-feature">View Attendance</a>
+                        <a href="#" class="btn-feature">Study Materials</a>
+                        <a href="#" class="btn-feature">View Results</a>
+                        <a href="#" class="btn-feature">View Timetable</a>
+                        <a href="#" class="btn-feature">Give Feedback</a>
+                        <a href="#" class="btn-feature">Announcements</a>
+                        <a href="#" class="btn-feature">View Subjects</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Activities -->
+            <div class="section-white">
+                <h3 class="section-title">📚 Student Activities</h3>
+                <div class="activities-grid">
+                    <a href="#" class="activity-item"><i class="fas fa-tasks"></i><p>Assignments</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-upload"></i><p>Submit</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-folder-open"></i><p>Materials</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-bell"></i><p>Notifications</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-calendar-alt"></i><p>Timetable</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-user-check"></i><p>Attendance</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-book-open"></i><p>Subjects</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-comment-dots"></i><p>Feedback</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-bullhorn"></i><p>Announce</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-id-card"></i><p>My Profile</p></a>
+                    <a href="#" class="activity-item"><i class="fas fa-sign-out-alt"></i><p>Logout</p></a>
+                </div>
+            </div>
+
+        </div>
+
+<!-- 🔔 Announcements Marquee -->
+<div class="notif-bar">
+    <strong><i class="fas fa-bullhorn"></i> Announcements:</strong>
+
+    <div class="marquee-wrap">
+    <div class="marquee-inner">
+        <ul class="info-list">
+            {% for ann in announcements_list %}
+                <li>{{ ann.massage }}</li>
+            {% empty %}
+                <li>No announcements available yet</li>
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+</div>
+        <!-- Bottom Info Grid -->
+        <div class="bottom-info-grid">
+            
+            <div class="section-white">
+                <h3 class="section-title">📝 Recent Assignments</h3>
+                <ul class="info-list">
+                    {% for a in assignments %}
+                        <li><span>{{ a.title }} - {{ a.subject }}</span> <strong>{{ a.deadline }}</strong></li>
+                    {% empty %}
+                        <li><span style="color:#94a3b8; font-style:italic;">No assignments yet...</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="section-white">
+                <h3 class="section-title">🔔 Recent Notices</h3>
+                <ul class="info-list">
+                    {% for notice in notices %}
+                        <li><span>{{ notice.message }}</span></li>
+                    {% empty %}
+                        <li><span style="color:#94a3b8; font-style:italic;">No recent notices...</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

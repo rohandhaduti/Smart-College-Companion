@@ -1,0 +1,460 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Table Details</title>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --orange: #FF7B00;
+  --dark-bg: rgba(18, 18, 18, 0.85);
+  --sidebar-bg: rgba(10, 10, 15, 0.95);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --text-main: #333;
+  --text-light: #f8f9fa;
+  --accent-gradient: linear-gradient(135deg, #FF7B00, #ff4500);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f7f6; /* Student clean background */
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar { 
+  width: 250px; 
+  height: 100vh; 
+  background: var(--sidebar-bg); 
+  position: fixed; 
+  top: 0; left: 0;
+  color: white; 
+  overflow-y: auto; 
+  z-index: 100; 
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.sidebar h1 { 
+  text-align: center; 
+  padding: 25px 0 15px; 
+  font-size: 2.2rem; 
+  font-weight: 700;
+  letter-spacing: 2px; 
+  color: var(--text-light);
+}
+
+.welcome-box { 
+  background: var(--accent-gradient);
+  margin: 15px; 
+  padding: 15px; 
+  border-radius: 12px; 
+  text-align: center; 
+  box-shadow: 0 4px 10px rgba(255, 123, 0, 0.3);
+}
+
+.welcome-box h3 { 
+  font-size: 0.85rem; 
+  letter-spacing: 1px; 
+  text-transform: uppercase; 
+  margin-bottom: 5px; 
+  color: rgba(255,255,255,0.9);
+}
+
+.welcome-box p { font-size: 1rem; font-weight: 600; color: white; }
+
+.sidebar ul { list-style: none; padding: 0 10px; }
+
+.sidebar ul li a { 
+  color: #adb5bd; 
+  text-decoration: none; 
+  padding: 12px 15px; 
+  display: flex; 
+  align-items: center; 
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 0.95rem; 
+  font-weight: 500;
+  border-radius: 8px; 
+  margin-bottom: 5px; 
+}
+
+.sidebar ul li a i { width: 25px; font-size: 1.1rem; color: var(--orange); transition: 0.3s; }
+
+.sidebar ul li a:hover { 
+  background: rgba(255, 123, 0, 0.15); 
+  color: var(--orange); 
+  transform: translateX(5px); 
+}
+
+.sidebar ul li a:hover i { transform: scale(1.1); }
+
+.logout-btn { padding: 15px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.logout-btn a { 
+  color: #adb5bd; text-decoration: none; font-size: 0.95rem; font-weight: 500; 
+  display: flex; align-items: center; gap: 10px; padding: 12px 15px; border-radius: 8px; transition: 0.3s; 
+}
+.logout-btn a i { color: #f43f5e; font-size: 1.1rem; }
+.logout-btn a:hover { background: rgba(244,63,94,0.15); color: #f43f5e; padding-left: 20px; }
+
+/* Main Content Area */
+.main-content {
+  margin-left: 250px;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Glassmorphism Containers */
+.container, .filter, form .table, .form-container form {
+  width: 100%;
+  max-width: 900px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.title, h2, h3, h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-align: center;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.title::after, h2::after, h3::after {
+  content: '';
+  width: 50px;
+  height: 4px;
+  background: var(--accent-gradient);
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Forms & Inputs */
+.input-box { margin-bottom: 20px; width: 100%; }
+.input-box span, label, p { font-weight: 600; font-size: 0.9rem; color: #555; margin-bottom: 8px; display: block; }
+
+input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="datetime-local"], select, textarea, input[type="number"], input[type="file"] {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 0.95rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  transition: all 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 8px rgba(255, 123, 0, 0.2);
+}
+
+input[type="submit"], button {
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
+  width: 100%;
+  margin-top: 10px;
+}
+
+input[type="submit"]:hover, button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 123, 0, 0.6);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eaedf1;
+  background: white;
+}
+
+th {
+  background: var(--accent-gradient);
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+tr:hover td { background: #fff8f3; }
+tr:last-child td { border-bottom: none; }
+
+td a { color: var(--orange); text-decoration: none; font-weight: 500; transition: 0.3s; }
+td a:hover { color: #cc6200; text-decoration: underline; }
+
+/* Filter Bar */
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter label { margin: 0; }
+.filter select { width: auto; margin: 0; }
+.filter input[type="submit"] { width: auto; margin: 0; padding: 10px 20px; }
+
+/* Responsive */
+@media(max-width: 768px) {
+  .sidebar { width: 70px; }
+  .sidebar span, .welcome-box h3, .welcome-box p { display: none; }
+  .sidebar ul li a { justify-content: center; padding: 15px 0; }
+  .sidebar ul li a i { margin: 0; font-size: 1.5rem; }
+  .main-content { margin-left: 70px; padding: 20px; }
+}
+/* User Details Grid */
+.user-details { display: flex; flex-wrap: wrap; justify-content: space-between; margin: 20px 0 12px 0; gap: 15px; }
+.user-details .input-box { width: calc(50% - 10px); margin-bottom: 15px; }
+.user-details .input-box.full-width { width: 100%; }
+.button { width: 100%; display: flex; justify-content: center; }
+.button input[type='submit'] { width: 50%; max-width: 300px; }
+@media(max-width: 768px) { .user-details .input-box { width: 100%; } }
+
+/* BODY */
+body {
+    background: #f4f6f9;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    padding: 40px;
+}
+
+/* TITLE */
+h3 {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #1e293b;
+}
+
+/* FILTER BOX */
+.filter-box {
+    max-width: 900px;
+    margin: auto;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
+}
+
+.filter-box form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-box label {
+    font-weight: 600;
+    color: #475569;
+}
+
+.filter-box select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    min-width: 150px;
+}
+
+/* BUTTON */
+.filter-box input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FF7B00, #ff4500);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.filter-box input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,123,0,0.4);
+}
+
+/* TABLE CONTAINER */
+.table-container {
+    max-width: 1000px;
+    margin: auto;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* HEADER */
+table th {
+    background: linear-gradient(135deg, #FF7B00, #ff4500);
+    color: white;
+    padding: 12px;
+}
+
+/* CELLS */
+table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* ROW STYLE */
+table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+table tr:hover {
+    background: #fff4ec;
+}
+
+/* EMPTY STATE */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    .filter-box form {
+        flex-direction: column;
+    }
+
+    table th, table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+
+<h3>Timetable Details</h3>
+
+<!-- FILTER -->
+<div class="filter-box">
+<form method="POST">
+{% csrf_token %}
+
+<label>Department</label>
+<select name="t1" required>
+<option value="" disabled {% if not selected_dept %}selected{% endif %}>SELECT</option>
+<option value="BA" {% if selected_dept == 'BA' %}selected{% endif %}>BA</option>
+<option value="BCOM" {% if selected_dept == 'BCOM' %}selected{% endif %}>BCOM</option>
+<option value="BSC" {% if selected_dept == 'BSC' %}selected{% endif %}>BSC</option>
+<option value="BBA" {% if selected_dept == 'BBA' %}selected{% endif %}>BBA</option>
+<option value="BCA" {% if selected_dept == 'BCA' %}selected{% endif %}>BCA</option>
+<option value="BSW" {% if selected_dept == 'BSW' %}selected{% endif %}>BSW</option>
+</select>
+
+<label>Semester</label>
+<select name="t2" required>
+<option value="" disabled {% if not selected_sem %}selected{% endif %}>SELECT</option>
+<option value="1" {% if selected_sem == '1' %}selected{% endif %}>1</option>
+<option value="2" {% if selected_sem == '2' %}selected{% endif %}>2</option>
+<option value="3" {% if selected_sem == '3' %}selected{% endif %}>3</option>
+<option value="4" {% if selected_sem == '4' %}selected{% endif %}>4</option>
+<option value="5" {% if selected_sem == '5' %}selected{% endif %}>5</option>
+<option value="6" {% if selected_sem == '6' %}selected{% endif %}>6</option>
+</select>
+
+<input type="submit" value="VIEW">
+
+</form>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+
+<table>
+
+<tr>
+<th>Day</th>
+<th>8:30</th>
+<th>9:30</th>
+<th>10:30</th>
+<th>11:30</th>
+</tr>
+
+{% if table %}
+{% for day, times in table.items %}
+<tr>
+<td>{{ day }}</td>
+<td>{{ times.t1 }}</td>
+<td>{{ times.t2 }}</td>
+<td>{{ times.t3 }}</td>
+<td>{{ times.t4 }}</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+<td colspan="5" class="no-data">No timetable data available</td>
+</tr>
+{% endif %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

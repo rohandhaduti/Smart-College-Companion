@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff; /* ✅ white background */
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,123,255,0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        table tr:hover {
+            background: #f1f7ff;
+        }
+
+        label {
+            margin: 0 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .present {
+            color: green;
+            font-weight: 500;
+        }
+
+        .absent {
+            color: red;
+            font-weight: 500;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table th, table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'staff_menu.html' %}
+
+<div class="main-content">
+    <div class="container">
+
+        <form method="POST" action="{% url 'insert_attendance' %}">
+            {% csrf_token %}
+
+            <h2>Attendance Page</h2>
+            <label style="color: black; font-weight: bold;margin-bottom: 10px;margin-left: 2px;">Subject</label>
+            <input type="text" name="subject" required value="{{ subject }}" readonly>
+                
+            <input type="hidden" name="sem" value="{{ semester }}">
+            
+            <table>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                </tr>
+
+                {% for i in userdict %}
+<tr>
+    <td>
+        {{ i.student_id }}
+        <input type="hidden" name="student_id" value="{{ i.student_id }}">
+    </td>
+
+    <td>{{ i.name }}</td>
+
+    <td>
+        <label class="present">
+            <input type="radio"
+                   name="status_{{ i.student_id }}"
+                   value="Present"
+                   required> Present
+        </label>
+
+        <label class="absent">
+            <input type="radio"
+                   name="status_{{ i.student_id }}"
+                   value="Absent"
+                   required> Absent
+        </label>
+    </td>
+</tr>
+{% endfor %}
+            </table>
+
+            <input type="submit" value="SUBMIT">
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

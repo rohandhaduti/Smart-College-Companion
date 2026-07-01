@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subjects</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+  --orange: #FF7B00;
+  --sidebar-bg: rgba(10, 10, 15, 0.95);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --text-main: #333;
+  --accent-grad: linear-gradient(135deg, #ab6dcf, #e36ae5);
+
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f7f6;
+}
+
+/* Layout */
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card */
+.container {
+  width: 100%;
+  max-width: 900px;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Title */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ef3479;
+}
+
+h1::after {
+  content: '';
+  width: 60px;
+  height: 4px;
+  background: var(--accent-gradient);
+  display: block;
+  margin: 10px auto;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background: var(--accent-grad);
+  color: white;
+}
+
+td, th {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #fff4ec;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .main-content { margin-left: 70px; padding: 20px; }
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'student_menu.html' %}
+
+<div class="main-content">
+
+  <div class="container">
+
+    <h1>Subjects</h1>
+
+    <table>
+      <tr>
+        <th>Subject</th>
+        <th>Instructor ID</th>
+        <th>Instructor Name</th>
+      </tr>
+
+      {% for i in userdict %}
+      <tr>
+        <td>{{ i.course_name }}</td>
+        <td>{{ i.instructor_id }}</td>
+        <td>{{ i.instructor_name }}</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+
+  </div>
+
+</div>
+
+</body>
+</html>

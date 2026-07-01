@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+<meta charset="UTF-8">
+<title>Staff Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* ✅ KEEP ALL YOUR COMMON CSS HERE */
+body { margin:0; display:flex; }
+
+/* Sidebar */
+.sidebar {
+    width:240px;
+    height:100vh;
+    background:#0d0d1a;
+    position:fixed;
+    color:white;
+}
+
+/* Main content */
+.main {
+    margin-left:240px;
+    width:100%;
+    padding:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- ✅ INCLUDE SIDEBAR -->
+{% include 'staff_menu.html' %}
+
+<!-- ✅ MAIN CONTENT AREA -->
+<div class="main">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

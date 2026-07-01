@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart College Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink: #0d1b2a;
+      --teal: #00b4a6;
+      --teal-dim: #007f78;
+      --cream: #f6f1eb;
+      --mist: #e8e0d6;
+      --text: #3a3a3a;
+      --card-bg: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 6%;
+      background: rgba(246,241,235,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--mist);
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--ink); letter-spacing: -.5px; }
+    .logo span { color: var(--teal); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul a { text-decoration: none; color: var(--text); font-size: .9rem; font-weight: 500; transition: color .2s; }
+    nav ul a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--ink); color: #fff !important;
+      padding: .45rem 1.1rem; border-radius: 6px;
+    }
+    .nav-cta:hover { background: var(--teal); color: #fff !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: .3s; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 8rem 6% 4rem;
+      background: radial-gradient(ellipse at 70% 40%, rgba(0,180,166,.12) 0%, transparent 65%),
+                  var(--cream);
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .badge {
+      display: inline-block; background: rgba(0,180,166,.12); color: var(--teal-dim);
+      font-size: .78rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 20px; margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4.4rem, 10vw, 5.6rem);
+      line-height: 1.1; color: var(--ink); margin-bottom: 1.2rem;
+    }
+    h1 em { color: var(--teal); font-style: normal; }
+    .hero p { font-size: 1.05rem; line-height: 1.75; color: #5a5a5a; max-width: 420px; margin-bottom: 2rem; }
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--ink); color: #fff; padding: .8rem 1.8rem;
+      border-radius: 8px; font-size: .95rem; font-weight: 500;
+      text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--teal); transform: translateY(-2px); }
+    .btn-outline {
+      border: 1.5px solid var(--ink); color: var(--ink); padding: .8rem 1.8rem;
+      border-radius: 8px; font-size: .95rem; font-weight: 500;
+      text-decoration: none; transition: .2s;
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+    .hero-visual {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      animation: floatIn .8s ease both .2s;
+    }
+    @keyframes floatIn { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: none; } }
+    .stat-card {
+      background: var(--card-bg); border-radius: 14px;
+      padding: 1.4rem; box-shadow: 0 4px 24px rgba(13,27,42,.07);
+      transition: transform .25s;
+    }
+    .stat-card:hover { transform: translateY(-4px); }
+    .stat-card:nth-child(2) { margin-top: 1.5rem; }
+    .stat-card:nth-child(4) { margin-top: -1.5rem; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--teal); }
+    .stat-label { font-size: .82rem; color: #888; margin-top: .2rem; }
+
+    /* ── FEATURES ── */
+    .features { padding: 6rem 6%; background: var(--card-bg); }
+    .section-label { text-align: center; margin-bottom: 3.5rem; }
+    .section-label h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3.5vw,2.6rem); color: var(--ink); margin-bottom: .6rem; }
+    .section-label p { color: #777; font-size: 1rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .feat-card {
+      background: var(--cream); border-radius: 14px; padding: 1.8rem;
+      border: 1px solid var(--mist); transition: box-shadow .25s, transform .25s;
+    }
+    .feat-card:hover { box-shadow: 0 8px 32px rgba(0,180,166,.12); transform: translateY(-4px); }
+    .feat-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feat-card h3 { font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: .5rem; }
+    .feat-card p { font-size: .88rem; color: #666; line-height: 1.65; }
+
+    /* ── ROLES SECTION ── */
+    .roles { padding: 6rem 6%; background: var(--cream); }
+    .roles-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      max-width: 900px; margin: 0 auto;
+    }
+    .role-card {
+      background: var(--card-bg); border-radius: 16px; padding: 2rem 1.6rem;
+      box-shadow: 0 4px 24px rgba(13,27,42,.06); text-align: center;
+      border-top: 3px solid var(--teal); transition: transform .25s;
+    }
+    .role-card:hover { transform: translateY(-4px); }
+    .role-icon { font-size: 2.2rem; margin-bottom: .9rem; }
+    .role-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: .5rem; }
+    .role-card p { font-size: .85rem; color: #777; line-height: 1.65; }
+
+    /* ── HOW IT WORKS ── */
+    .how { padding: 6rem 6%; background: var(--card-bg); }
+    .steps { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+    .step { text-align: center; flex: 1; min-width: 160px; max-width: 200px; }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      font-family: 'Playfair Display', serif; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    .step h4 { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; }
+    .step p { font-size: .82rem; color: #777; line-height: 1.6; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      padding: 5rem 6%; text-align: center;
+      background: var(--ink);
+    }
+    .cta-banner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3.5vw,2.4rem); color: #fff; margin-bottom: .8rem; }
+    .cta-banner p { color: rgba(255,255,255,.65); margin-bottom: 2rem; font-size: 1rem; }
+    .btn-teal {
+      background: var(--teal); color: #fff;
+      padding: .85rem 2.2rem; border-radius: 8px;
+      font-size: 1rem; font-weight: 500; text-decoration: none;
+      display: inline-block; transition: background .2s, transform .15s;
+    }
+    .btn-teal:hover { background: var(--teal-dim); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer { background: #111820; color: rgba(255,255,255,.55); font-size: .88rem; }
+    .footer-main {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem;
+      max-width: 1100px; margin: 0 auto; padding: 4rem 6% 3rem;
+    }
+    .footer-brand .logo { font-size: 1.4rem; display: block; margin-bottom: .9rem; }
+    .footer-brand p { line-height: 1.7; color: rgba(255,255,255,.45); font-size: .85rem; max-width: 240px; margin-bottom: 1.2rem; }
+    .social-links { display: flex; gap: .7rem; }
+    .social-links a {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: rgba(255,255,255,.08); color: rgba(255,255,255,.7);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: .9rem; transition: background .2s;
+    }
+    .social-links a:hover { background: var(--teal); color: #fff; }
+    .footer-col h4 { color: #fff; font-size: .85rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1.1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .footer-col ul a { color: rgba(255,255,255,.5); text-decoration: none; font-size: .85rem; transition: color .2s; }
+    .footer-col ul a:hover { color: var(--teal); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: .5rem; padding: 1.3rem 6%;
+      font-size: .78rem; color: rgba(255,255,255,.3);
+    }
+    .footer-bottom span { color: var(--teal); }
+    .footer-bottom-links { display: flex; gap: 1.5rem; }
+    .footer-bottom-links a { color: rgba(255,255,255,.3); text-decoration: none; transition: color .2s; }
+    .footer-bottom-links a:hover { color: var(--teal); }
+    @media (max-width: 768px) {
+      .footer-main { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+      .roles-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) { .footer-main { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav ul { display: none; flex-direction: column; gap: 1rem; background: var(--cream); position: absolute; top: 100%; left: 0; width: 100%; padding: 1.5rem 6%; border-top: 1px solid var(--mist); }
+      nav ul.open { display: flex; }
+      .hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-visual { max-width: 360px; }
+      .hero p { max-width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .hero-visual { grid-template-columns: 1fr 1fr; }
+      .stat-card:nth-child(2), .stat-card:nth-child(4) { margin-top: 0; }
+    }
+
+    /* ── FADE-IN ── */
+    .fade { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .fade.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Smart<span>CC</span></div>
+  <ul id="navLinks">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#roles">Who It's For</a></li>
+    <li><a href="{% url 'user_login' %}" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+ <center>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="fade visible">
+      <h1>Navigate College Life<br>with <em>Confidence</em></h1>
+      <p>From timetables to attendance — Smart College Companion keeps students, staff, and admins organized, connected, and always one step ahead.</p>
+      <div class="btn-group">
+        <a href="#" class="btn-primary">Start Free →</a>
+        <a href="#features" class="btn-outline">Explore Features</a>
+      </div>
+    </div>
+  
+</section>
+</center>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label fade">
+    <h2>Everything You Need, in One Place</h2>
+    <p>Designed for the modern student's fast-paced campus life.</p>
+  </div>
+  <div class="features-grid">
+
+    <div class="feat-card fade">
+      <div class="feat-icon">📅</div>
+      <h3>Smart Timetable</h3>
+      <p>Auto-synced class schedules by department, semester, and day. View instructor assignments and get reminders so you never miss a class.</p>
+    </div>
+
+    <div class="feat-card fade">
+      <div class="feat-icon">📋</div>
+      <h3>Assignment Tracker</h3>
+      <p>Instructors post assignments with deadlines; students submit files directly. Monitor submission status and never miss a deadline again.</p>
+    </div>
+
+    <div class="feat-card fade">
+      <div class="feat-icon">✅</div>
+      <h3>Attendance Management</h3>
+      <p>Track attendance per subject and semester. Students and staff get a clear view of present, absent, and leave records at a glance.</p>
+    </div>
+
+    
+
+    <div class="feat-card fade">
+      <div class="feat-icon">📚</div>
+      <h3>Study Materials</h3>
+      <p>Instructors upload subject-wise resources by semester. Students access notes, PDFs, and references anytime, anywhere.</p>
+    </div>
+
+    <div class="feat-card fade">
+      <div class="feat-icon">🔔</div>
+      <h3>Announcements & Notifications</h3>
+      <p>Stay updated with real-time notifications from admin and staff. Event announcements are broadcast instantly to the right audience.</p>
+    </div>
+
+    <div class="feat-card fade">
+      <div class="feat-icon">💬</div>
+      <h3>Instructor Feedback</h3>
+      <p>Instructors provide structured comments and grades on assignments. Students receive timely, actionable feedback to improve performance.</p>
+    </div>
+
+    <div class="feat-card fade">
+      <div class="feat-icon">🏫</div>
+      <h3>Department & Subject Management</h3>
+      <p>Admins manage departments, HODs, and subject enrollments. Every course is linked to the right instructor and student batch.</p>
+    </div>
+
+    <div class="feat-card fade">
+      <div class="feat-icon">👨‍🏫</div>
+      <h3>Instructor Profiles</h3>
+      <p>Detailed faculty profiles with qualifications, experience, joining date, and subjects handled — visible to students and administrators.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="roles" id="roles">
+  <div class="section-label fade">
+    <h2>Built for Every Role on Campus</h2>
+    <p>One platform, three tailored experiences.</p>
+  </div>
+  <div class="roles-grid">
+    <div class="role-card fade">
+      <div class="role-icon">🎓</div>
+      <h3>Students</h3>
+      <p>View timetables, submit assignments, track attendance, check exam scores, and access study materials — all from one dashboard.</p>
+    </div>
+    <div class="role-card fade">
+      <div class="role-icon">👨‍🏫</div>
+      <h3>Staff / Instructors</h3>
+      <p>Post assignments, upload study materials, mark attendance, give feedback on submissions, and manage your assigned subjects.</p>
+    </div>
+    <div class="role-card fade">
+      <div class="role-icon">🛡️</div>
+      <h3>Admin</h3>
+      <p>Manage departments, students, instructors, exams, announcements, and the overall institution from a centralized control panel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="cta">
+  <h2>Ready to Ace Your College Journey?</h2>
+  <p>Join students and faculty already using Smart College Companion.</p>
+  <a href="{% url 'user_login' %}" class="btn-teal">Get Started</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="logo">Smart<span>CC</span></div>
+      <p>Your all-in-one academic companion — helping students, staff, and admins stay organized, connected, and career-ready from day one.</p>
+      
+    </div>
+</footer>
+
+<script>
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

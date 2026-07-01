@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Menus</title>
+</head>
+<body>
+    <h1>Staff Menus</h1>
+    <nav>
+        <a href="{% url 'insert_assignment' %}">Assignment</a>
+        <a href="{% url 'show_submissions' %}">View Submission</a>
+        <a href="{% url '' %}">Exams Score</a>
+        <a href="{% url 'view_notifications' %}">Views Notifications</a>
+        <a href="{% url 'show_announcements' %}">View Announsement</a>
+        <a href="{% url 'insert_attendance' %}">Attendances</a>
+        <a href="{% url 'insert_StudyMaterial' %}">Study Materials</a>
+        <a href="{% url 'show_student' %}">View Student Details</a>
+        <a href="{% url 'insert_notifications' %}">Notifications</a>
+        <a href="{% url 'show_timetable' %}">View Time Table</a>
+        <a href="{% url 'show_feedback' %}">View Feedback</a>
+        <a href="{% url 'show_department' %}">View Department</a>
+        <a href="{% url '' %}"> Exams</a>
+        <a href="{% url '' %}">View Exams</a>
+        <a href="{% url 'show_instructor' %}">View Instructor</a>
+        <a href="{% url 'changepassword' %}">Change password</a>
+        <a href="{% url 'login' %}">logout</a>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,554 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --orange: rgba(52, 235, 144, 0.6);
+            --sidebar-bg: #0d0d1a;
+            --sidebar-accent: #1a1a35;
+            --blue: linear-gradient(135deg, #4f8ef7, #1a56db);
+            --purple: linear-gradient(135deg, #a855f7, #7c3aed);
+            --red: linear-gradient(135deg, #f43f5e, #be123c);
+            --lime: linear-gradient(135deg, #a3e635, #65a30d);
+            --brown: linear-gradient(135deg, #f97316, #c2410c);
+            --pink: linear-gradient(135deg, #ec4899, #9d174d);
+            --bg: #f0f2f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        html,
+        body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background: var(--bg);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* MAIN */
+        .main {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #24a876, #51cce8);
+            color: white;
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: 0 4px 20px rgba(255, 107, 43, .35);
+        }
+
+        .navbar h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .nav-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .nav-info span {
+            background: rgba(255, 255, 255, .2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .nav-logout {
+            background: rgba(255, 255, 255, .18);
+            border: 1.5px solid rgba(255, 255, 255, .55);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: .2s;
+        }
+
+        .nav-logout:hover {
+            background: rgba(255, 255, 255, .3);
+        }
+
+        .content-padding {
+            padding: 22px;
+            margin-bottom:25px ;
+        }
+
+        .section-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        /* CARDS */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(140px, 1fr));
+            gap: 10px;
+            width: 100%;
+        }
+
+        .card {
+            padding: 8px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+        }
+
+        .card i {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 10px;
+        }
+
+        /* MIDDLE GRID */
+        .middle-grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .section-white {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, .06);
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1e293b;
+        }
+
+        /* FEATURES */
+        .features-flex {
+            display: flex;
+            gap: 16px;
+        }
+
+        .features-img-box {
+            width: 38%;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1a1a35, #0d0d1a);
+            border: 1px solid rgba(255, 107, 43, .3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 12px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .key-wrap {
+            position: relative;
+            display: inline-block;
+            width: 56px;
+            height: 50px;
+        }
+
+        .key-wrap .fa-key {
+            font-size: 46px;
+            color: #e2e8f0;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .key-wrap .fa-gear {
+            font-size: 22px;
+            color: var(--orange);
+            position: absolute;
+            bottom: -4px;
+            right: -6px;
+        }
+
+        .features-img-box .acc-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-top: 8px;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .features-img-box .acc-sub {
+            font-size: 10px;
+            color: #94a3b8;
+        }
+
+        .features-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .btn-feature {
+            background: linear-gradient(135deg, #f8faff, #eef2ff);
+            border: 1px solid #e0e7ff;
+            padding: 10px 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #3730a3;
+            cursor: pointer;
+            transition: .2s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-feature:hover {
+            background: linear-gradient(135deg, #4f8ef7, #1a56db);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.03);
+        }
+
+        /* ACTIVITIES */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .activity-item {
+            background: linear-gradient(135deg, #f8faff, #f1f5f9);
+            border: 1px solid #e2e8f0;
+            padding: 14px 5px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: .25s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .activity-item:hover {
+            background: linear-gradient(135deg, #ff6b2b, #ff4d00);
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(255, 107, 43, .3);
+        }
+
+        .activity-item:hover i,
+        .activity-item:hover p {
+            color: white !important;
+        }
+
+        .activity-item i {
+            font-size: 20px;
+            color: #475569;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .activity-item p {
+            font-size: 10px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        /* NOTIF BAR */
+        .notif-bar {
+            background: linear-gradient(90deg, #fff1f2, white);
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            border-left: 5px solid #f43f5e;
+            font-size: 13px;
+            box-shadow: 0 2px 10px rgba(244, 63, 94, .08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+        }
+
+        .notif-bar strong {
+            color: #f43f5e;
+            white-space: nowrap;
+        }
+
+        .notif-bar .marquee-wrap {
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .notif-bar .marquee-inner {
+            display: inline-flex;
+            gap: 40px;
+            animation: marquee 25s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        .notif-bar .marquee-inner span {
+            color: #475569;
+        }
+
+        /* BOTTOM GRID */
+        .bottom-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            color: #475569;
+        }
+
+        .info-list li strong {
+            color: #ff6b2b;
+            font-weight: 700;
+        }
+
+        @media(max-width:1200px) {
+            .cards-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .middle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:768px) {
+            .main {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bottom-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    {% include 'admin_menu.html' %}
+
+    <!-- MAIN -->
+    <div class="main">
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <h2>Admin Dashboard</h2>
+            <div class="nav-info">
+                <span>{{ request.user.get_full_name|default:"Admin" }}</span>
+                
+                <i class="fa fa-user-circle fa-lg" style="margin-left:6px;"></i>
+                <a href="{% url 'user_login' %}" class="nav-logout">
+                    <i class="fas fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <div class="content-padding">
+            <p class="section-label">OVERVIEW</p>
+
+            <!-- Stat Cards -->
+            <div class="cards-container">
+                <div class="card" style="background:var(--blue);">
+                    <i class="fa fa-graduation-cap"></i>
+                    <h2>{{ student_count }}</h2>
+                    <p>Total Students</p>
+                </div>
+                <div class="card" style="background:var(--purple);">
+                    <i class="fas fa-user-tie"></i>
+                    <h2>{{ total_staff }}</h2>
+                    <p>Staff</p>
+                </div>
+                <div class="card" style="background:var(--red);">
+                    <i class="fas fa-building"></i>
+                    <h2>{{ total_departments }}</h2>
+                    <p>Departments</p>
+                </div>
+                <div class="card" style="background:var(--lime);">
+                    <i class="fas fa-book-open"></i>
+                    <h2>{{ total_subjects }}</h2>
+                    <p>Subjects</p>
+                </div>
+                <div class="card" style="background:var(--brown);">
+                    <i class="fas fa-users"></i>
+                    <h2>{{ total_feedbacks }}</h2>
+                    <p>Feedbacks</p>
+                </div>
+                <div class="card" style="background:var(--pink);">
+                    <i class="fas fa-bell"></i>
+                    <h2>{{ recent_announcements }}</h2>
+                    <p>Admin Announcements</p>
+                </div>
+            </div>
+
+            <!-- Middle Grid -->
+            <div class="middle-grid">
+
+                <!-- Admin Features -->
+                <div class="section-white">
+                    <h3 class="section-title">🎉 Admin Features</h3>
+                    <div class="features-flex">
+                        <div class="features-img-box">
+                            <div class="key-wrap">
+                                <i class="fas fa-key"></i>
+                                <i class="fas fa-gear"></i>
+                            </div>
+                            <div class="acc-label">Admin Access</div>
+                            <div class="acc-sub">Full Control Panel</div>
+                        </div>
+                        <div class="features-buttons">
+                            <a href="{% url 'insert_student' %}" class="btn-feature">Add Student Details</a>
+                            <a href="{% url 'show_feedback_admin' %}" class="btn-feature">View Feedbacks</a>
+                            <a href="{% url 'show_instructor_admin' %}" class="btn-feature">Manage Instructors</a>
+                            <a href="{% url 'show_department_admin' %}" class="btn-feature">Manage Department</a>
+                            <a href="#" class="btn-feature">Modify Time Table</a>
+                            <a href="#" class="btn-feature">Manage Subjects</a>
+                            <a href="#" class="btn-feature">Manage Announcements</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Activities -->
+                <div class="section-white">
+                    <h3 class="section-title">📊 Admin Activities</h3>
+                    <div class="activities-grid">
+
+                        <a href="#" class="activity-item"><i class="fas fa-calendar-alt"></i>
+                            <p>Timetable</p>
+                        </a>
+                        <a href="#" class="activity-item"><i class="fas fa-user-graduate"></i>
+                            <p>Add Student</p>
+                        </a>
+                        <a href="#" class="activity-item"><i class="fas fa-calendar-week"></i>
+                            <p>Modify Table</p>
+                        </a>
+
+                        <a href="#" class="activity-item"><i class="fas fa-bullhorn"></i>
+                            <p>Announce</p>
+                        </a>
+                        <a href="#" class="activity-item"><i class="fas fa-chalkboard-user"></i>
+                            <p>Instructors</p>
+                        </a>
+                        <a href="#" class="activity-item"><i class="fas fa-building-columns"></i>
+                            <p>Departments</p>
+                        </a>
+                        <a href="#" class="activity-item"><i class="fas fa-sign-out-alt"></i>
+                            <p>Logout</p>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            
+
+            <!-- Bottom Info Grid -->
+            <div class="bottom-info-grid">
+                
+                <div class="section-white">
+                    <h3 class="section-title">💬 Recent Feedbacks</h3>
+                    <ul class="info-list">
+                        {% for fb in feedbacks %}
+                        <li><span>{{ fb.comments }}</span></li>
+                        {% empty %}
+                        <li><span>No feedback available yet</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="section-white">
+                    <h3 class="section-title">📣 Recent Announcements</h3>
+                    <ul class="info-list">
+                        {% for ann in announcements_list %}
+                        <li><span>{{ ann.massage }}</span></li>
+                        {% empty %}
+                        <li><span>No announcements available yet</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

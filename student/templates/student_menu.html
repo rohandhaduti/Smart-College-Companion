@@ -1,0 +1,42 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/student.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<div class="sidebar">
+
+    <!-- LOGO -->
+    <div class="logo">
+        <h1><span>S</span>CC</h1>
+    </div>
+
+    <!-- USER -->
+    <div class="welcome-box">
+        <h3>Student Portal</h3>
+        <p>{{ request.session.name|default:"Student" }}</p>
+    </div>
+
+    <!-- MENU -->
+    <ul class="menu">
+        <li><a href="{% url 'show_student' %}"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="{% url 'show_assignment' %}"><i class="fas fa-tasks"></i> Assignments</a></li>
+        <li><a href="{% url 'insert_submissions' %}"><i class="fas fa-upload"></i> Submission</a></li>
+        <li><a href="{% url 'insert_feedback' %}"><i class="fas fa-comment-dots"></i> Feedback</a></li>
+        <li><a href="{% url 'show_student_attendance' %}"><i class="fas fa-user-check"></i> Attendance</a></li>
+        <li><a href="{% url 'show_subjects' %}"><i class="fas fa-book-open"></i> Subjects</a></li>
+        <li><a href="{% url 'show_announcements' %}"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+        <li><a href="{% url 'view_notifications' %}"><i class="fas fa-bell"></i> Notifications</a></li>
+        <li><a href="{% url 'show_timetable_student' %}"><i class="fas fa-calendar-alt"></i> Timetable</a></li>
+        <div class="sidebar-footer">
+        <a href="{% url 'changepassword' %}">
+            <i class="fa-solid fa-lock"></i> Change Password
+        </a>
+        <a href="{% url 'user_login' %}">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+    </ul>
+
+    <!-- FOOTER -->
+    
+
+</div>

@@ -1,0 +1,54 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}">
+
+<title>Register</title>
+<style>
+body{
+    margin:0; height:100vh;
+   /* {% static 'path/to/file' %}*/
+    background:url("{% static 'images/register.jpeg' %}") center/cover no-repeat;
+    font-family:Arial;
+    display:flex; align-items:center; justify-content:center;
+}
+.form-box{
+    background:rgba(0,0,0,0.35);
+    padding:30px; width:300px; height: 380px;;
+    border-radius:20px;
+    box-shadow: 2px 3px 4px white;
+
+}
+.form-box h2{text-align:center;
+            color: #fff;}
+input,button{
+    width:100%; padding:10px;
+    margin:8px 0; border:1px solid #ccc;
+    border-radius:5px;
+}
+.regbtn{
+    background:#4CAF50; color:#fff;
+    font-size:16px; cursor:pointer;
+    text-align: center;
+}
+input[type="password"]{
+    margin-bottom: 40px;
+}
+
+</style>
+</head>
+<body>
+<form method="post">
+    {% csrf_token  %}
+<div class="form-box">
+    <h2><span style="color:orange;">R</span>egister</h2>
+    <div>
+    <input type="text" placeholder="Full Name" name="t1" required pattern="[a-zA-Z\s]+">
+    <input type="email" placeholder="Email" name="t2" required >
+    <input type="mobile" name="t3" placeholder="Mobile number" required pattern="[6-9]{1}[0-9]{9}">
+    <input type="password" placeholder="Password" name="t5" required pattern="[a-zA-Z0-9]+">
+    <a href="login"> <input type="submit" value="Register" class="regbtn"></a>
+</div>
+</form>
+</body>
+</html>
