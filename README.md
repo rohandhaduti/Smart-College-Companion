@@ -1,2 +1,2 @@
-Cricket Tournament System
-Cricket Tournament System is a web-based platform designed to simplify the management of cricket tournaments. The application allows administrators to manage players, organize matches, track statistics, maintain tournament records, and handle awards through a centralized dashboard.
+Smart College Companion
+Smart College Companion is a web-based college management system developed using Python and Django. It streamlines academic activities by providing role-based access for administrators, staff, and students, with features such as attendance management, assignment submission, timetable management, notices, and an admin dashboard.
